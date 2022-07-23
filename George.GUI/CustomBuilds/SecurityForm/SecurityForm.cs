@@ -27,10 +27,9 @@ namespace George.GUI.CustomBuilds.SecurityForm
             _securityInput = new SecurityInput();
 
             _securityInput.SetNextAction(DisplaySignUpVideoDisplay);
-
-            DisplayLoginForm();
             InitializeComponent();
-            
+            DisplayLoginForm();
+
         }
 
         #region Event Handlers Methods
