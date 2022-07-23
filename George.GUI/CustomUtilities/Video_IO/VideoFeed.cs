@@ -52,16 +52,15 @@ namespace George.GUI.CustomUtilities.Video_IO
 
         public void OpenCamera()
         {
-            if (_videoCapture.IsOpened)
-            {
-                _videoCapture.ImageGrabbed += _videoCapture_ImageGrabbed;
-                _videoCapture.Start();
-            }
+            _videoCapture.ImageGrabbed += _videoCapture_ImageGrabbed;
+            _videoCapture.Start();
         }
 
         public void CloseCamera()
         {
             _videoCapture.Stop();
+            _videoCapture.Dispose();
+            _videoCapture = new VideoCapture();
         }
         #endregion
 
