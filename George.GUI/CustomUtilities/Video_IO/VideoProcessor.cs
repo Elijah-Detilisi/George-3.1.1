@@ -14,6 +14,7 @@ namespace George.GUI.CustomUtilities.Video_IO
     {
         #region Instances
         private readonly CascadeClassifier _faceCascade;
+        private Action<Image<Bgr, Byte>> _process;
         #endregion
 
         public VideoProcessor()
@@ -22,14 +23,30 @@ namespace George.GUI.CustomUtilities.Video_IO
             _faceCascade = new CascadeClassifier(cascade_path);
         }
 
-        public void DetectFaces(ref Image<Bgr, byte> imageFrame)
+        #region Setter Methods
+        public void SetProcess(Action<Image<Bgr, Byte>> process)
+        {
+            _process = process;
+        }
+        #endregion
+
+        #region Image Processing Methods
+        public Mat Convert2GrayImage(Image<Bgr, byte> imageFrame)
         {
             Mat grayImage = new Mat();
-            var borderColor = new Bgr(Color.SteelBlue);
 
             CvInvoke.CvtColor(imageFrame, grayImage, ColorConversion.Bgr2Gray);
             CvInvoke.EqualizeHist(grayImage, grayImage);
 
+            return grayImage;
+        }
+        public void DetectFaces(ref Image<Bgr, Byte> imageFrame)
+        {
+            var borderColor = new Bgr(Color.SteelBlue);
+            Mat grayImage = Convert2GrayImage(imageFrame);
+
+            Image<Bgr, Byte> resultImage = imageFrame.Convert<Bgr, Byte>();
+            
             Rectangle[] detectedFaces = _faceCascade.DetectMultiScale(
                 image: grayImage,
                 scaleFactor: 1.1,
@@ -48,9 +65,14 @@ namespace George.GUI.CustomUtilities.Video_IO
                         color: borderColor.MCvScalar,
                         thickness: 3
                     );
-                }
-            }
-        }
 
+                    //execute process
+                    resultImage.ROI = face;
+                    resultImage.Resize(200, 200, Inter.Cubic);
+                    _process(resultImage);
+                }
+            } 
+        }
+        #endregion
     }
 }

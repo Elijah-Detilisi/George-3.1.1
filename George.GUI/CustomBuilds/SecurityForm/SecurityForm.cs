@@ -109,6 +109,7 @@ namespace George.GUI.CustomBuilds.SecurityForm
         private void DisplayVideoFeed()
         {
             _securityInput.Hide();
+            _videoDisplay.ResumeVideoFeed();
 
             _videoDisplay.Dock = DockStyle.Bottom;
             _videoDisplay.Location = new System.Drawing.Point(0, 100);

@@ -39,9 +39,13 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         #endregion
 
         #region Video Feed Methods
-        private void LoadVideoFeed()
+        public void LoadVideoFeed()
         {
             _videoFeed.SetDisplayWidget(videoPictureBox);
+            _videoFeed.OpenCamera();
+        }
+        public void ResumeVideoFeed()
+        {
             _videoFeed.OpenCamera();
         }
 
