@@ -19,6 +19,7 @@ namespace George.GUI.CustomUtilities.Video_IO
 
         private Control _displayWidget;
         private VideoProcessor _videoProcessor;
+        private FaceRecognizer _faceRecognizer;
 
         #endregion
 
@@ -27,6 +28,10 @@ namespace George.GUI.CustomUtilities.Video_IO
             _videoCapture = new VideoCapture();
             _captureFrame = new Mat();
             _videoProcessor = new VideoProcessor();
+            _faceRecognizer = new FaceRecognizer();
+
+            _faceRecognizer.SetImageProcessor(_videoProcessor);
+
         }
 
         #region Setter Methods
@@ -61,9 +66,12 @@ namespace George.GUI.CustomUtilities.Video_IO
 
         public void CloseCamera()
         {
-            _videoCapture.Stop();
-            _videoCapture.Dispose();
-            _videoCapture = new VideoCapture();
+            Task.Factory.StartNew(() =>
+            {
+                _videoCapture.Stop();
+                _videoCapture.Dispose();
+                _videoCapture = new VideoCapture();
+            });
         }
         #endregion
 

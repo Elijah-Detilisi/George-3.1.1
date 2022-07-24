@@ -22,8 +22,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         {
             _videoFeed = new VideoFeed();
             InitializeComponent();
-            this.Load += VideoDisplay_Load;
-            
+            this.Load += VideoDisplay_Load; 
         }
 
         #region Setter Methods
@@ -44,15 +43,21 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             _videoFeed.SetDisplayWidget(videoPictureBox);
             _videoFeed.OpenCamera();
         }
+        public void DisplayDefualtBg()
+        {
+            videoPictureBox.BackgroundImage = Properties.Resources.face_recognition;
+            videoPictureBox.BackgroundImageLayout = ImageLayout.Zoom;
+        }
         public void ResumeVideoFeed()
         {
             _videoFeed.OpenCamera();
         }
-
         public void StopVideoFeed()
         {
             _videoFeed.CloseCamera();
+            DisplayDefualtBg();
         }
+        
         #endregion
 
         #region Event Handler Methods
@@ -61,5 +66,6 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             LoadVideoFeed();
         }
         #endregion
+
     }
 }

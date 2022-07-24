@@ -21,12 +21,18 @@ namespace George.GUI.CustomUtilities.Video_IO
         {
             string cascade_path = @$"{Directory.GetCurrentDirectory()}\Resources\XML Files\haarcascade_frontalface_alt.xml";
             _faceCascade = new CascadeClassifier(cascade_path);
+            _process = DummyProcess;
         }
 
         #region Setter Methods
         public void SetProcess(Action<Image<Bgr, Byte>> process)
         {
             _process = process;
+        }
+
+        public void DummyProcess(Image<Bgr, Byte> imageData)
+        {
+            //Dummy
         }
         #endregion
 

@@ -9,7 +9,7 @@ namespace George.GUI.CustomUtilities.Video_IO
     using Emgu.CV;
     using Emgu.CV.Structure;
     using Emgu.CV.Face;
-    using Emgu.CV.CvEnum;
+    using System.Diagnostics;
 
     public class FaceRecognizer
     {
@@ -34,47 +34,72 @@ namespace George.GUI.CustomUtilities.Video_IO
             _trainingLabel = new List<int>();
             _trainingData = new List<Image<Gray, byte>>();
             _testData = new List<Image<Gray, byte>>();
-
-            _imageProcessor = new VideoProcessor();
             _recognizer = new EigenFaceRecognizer();
-
-            _imageProcessor.SetProcess(GatherModelData);
         }
 
         #region Setter Methods
+        public void SetImageProcessor(VideoProcessor processor)
+        {
+            _imageProcessor = processor;
+            _imageProcessor.SetProcess(GatherModelData);
+        }
         public void GatherModelData(Image<Bgr, Byte> imageData)
         {
-            int sampleSize = 200;
             int faceId = 1;
-            var grayImagedata = imageData.Convert<Gray, byte>();
+            int sampleSize = 200;
 
-            if (_trainingData.Count() <= sampleSize * 0.75)
+            if ((_trainingData.Count()<=sampleSize * 0.75) && (_testData.Count() <= sampleSize * 0.25))
             {
-                _trainingData.Add(grayImagedata);
+                var grayImagedata = imageData.Convert<Gray, byte>();
+
+                if (_trainingData.Count() <= sampleSize * 0.75)
+                {
+                    _trainingData.Add(grayImagedata);
+                }
+                else
+                {
+                    _testData.Add(grayImagedata);
+                }
+
+                _trainingLabel.Add(faceId);
             }
             else
             {
-                _testData.Add(grayImagedata);
+                Console.Beep();
+                TrainModel();
+                _imageProcessor.SetProcess(_imageProcessor.DummyProcess);
             }
-
-            _trainingLabel.Add(faceId);
         }
-        #endregion
-
-        public void TrainModel()
+        public void LoadModel()
         {
             try
             {
+                _recognizer.Read(_modelName);
+                _isTrained = true;
+            }
+            catch (Exception)
+            {
+                _isTrained = false;
+            }
+        }
+        #endregion
+
+        #region Model Methods
+        public void TrainModel()
+        {
+            try
+            { 
                 _recognizer.Train((IInputArrayOfArrays)_trainingData, (IInputArray)_trainingLabel);
                 _recognizer.Write(_modelName);
                 _isTrained = true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Debug.WriteLine($"[INFO]: ERROR WHILE TRAINING; {ex.Message}");
+                Console.Beep();
+                Console.Beep();
             }
         }
-
         public void Predict(Image<Bgr, Byte> imageData)
         {
             if (_isTrained)
@@ -93,5 +118,6 @@ namespace George.GUI.CustomUtilities.Video_IO
                 }
             }
         }
+        #endregion
     }
 }
