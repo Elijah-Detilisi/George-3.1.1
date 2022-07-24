@@ -10,6 +10,7 @@ namespace George.GUI.CustomUtilities.Video_IO
     using Emgu.CV.Structure;
     using Emgu.CV.Face;
     using System.Diagnostics;
+    using Emgu.CV.Util;
 
     public class FaceRecognizer
     {
@@ -19,8 +20,8 @@ namespace George.GUI.CustomUtilities.Video_IO
         private Boolean _isTrained;
 
         private List<int> _trainingLabel;
-        private List<Image<Gray, Byte>> _trainingData;
-        private List<Image<Gray, Byte>> _testData;
+        private List<Mat> _trainingData;
+        private List<Mat> _testData;
 
         private VideoProcessor _imageProcessor;
         private EigenFaceRecognizer _recognizer;
@@ -32,8 +33,9 @@ namespace George.GUI.CustomUtilities.Video_IO
             _modelName = @$"{Directory.GetCurrentDirectory()}\Resources\XML Files\Recognizer";
 
             _trainingLabel = new List<int>();
-            _trainingData = new List<Image<Gray, byte>>();
-            _testData = new List<Image<Gray, byte>>();
+            _trainingData = new List<Mat>();
+            _testData = new List<Mat>();
+
             _recognizer = new EigenFaceRecognizer();
         }
 
@@ -50,7 +52,9 @@ namespace George.GUI.CustomUtilities.Video_IO
 
             if ((_trainingData.Count()<=sampleSize * 0.75) && (_testData.Count() <= sampleSize * 0.25))
             {
-                var grayImagedata = imageData.Convert<Gray, byte>();
+                var grayImagedata = imageData.Convert<Gray, byte>()
+                    .Resize(200, 200, Emgu.CV.CvEnum.Inter.Cubic)
+                    .Mat;
 
                 if (_trainingData.Count() <= sampleSize * 0.75)
                 {
@@ -88,10 +92,16 @@ namespace George.GUI.CustomUtilities.Video_IO
         public void TrainModel()
         {
             try
-            { 
-                _recognizer.Train((IInputArrayOfArrays)_trainingData, (IInputArray)_trainingLabel);
+            {
+                Debug.WriteLine("[INFO]: Model training...");
+                _recognizer.Train(
+                    new VectorOfMat(_trainingData.ToArray()),
+                    new VectorOfInt(_trainingLabel.ToArray())
+                );
+
                 _recognizer.Write(_modelName);
                 _isTrained = true;
+                Debug.WriteLine("[INFO]: Training complete!");
             }
             catch (Exception ex)
             {
