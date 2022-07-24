@@ -21,7 +21,7 @@ namespace George.GUI.CustomUtilities.Video_IO
 
         private List<int> _trainingLabel;
         private List<Mat> _trainingData;
-        private List<Mat> _testData;
+        private List<Image<Bgr, Byte>> _testData;
 
         private VideoProcessor _imageProcessor;
         private EigenFaceRecognizer _recognizer;
@@ -34,7 +34,7 @@ namespace George.GUI.CustomUtilities.Video_IO
 
             _trainingLabel = new List<int>();
             _trainingData = new List<Mat>();
-            _testData = new List<Mat>();
+            _testData = new List<Image<Bgr, Byte>>();
 
             _recognizer = new EigenFaceRecognizer();
         }
@@ -62,7 +62,7 @@ namespace George.GUI.CustomUtilities.Video_IO
                 }
                 else
                 {
-                    _testData.Add(grayImagedata);
+                    _testData.Add(imageData);
                 }
 
                 _trainingLabel.Add(faceId);
@@ -102,6 +102,7 @@ namespace George.GUI.CustomUtilities.Video_IO
                 _recognizer.Write(_modelName);
                 _isTrained = true;
                 Debug.WriteLine("[INFO]: Training complete!");
+                TestModelPerformance();
             }
             catch (Exception ex)
             {
@@ -110,23 +111,40 @@ namespace George.GUI.CustomUtilities.Video_IO
                 Console.Beep();
             }
         }
-        public void Predict(Image<Bgr, Byte> imageData)
+        public Boolean Predict(Image<Bgr, Byte> imageData)
         {
+            Boolean result = false;
+
             if (_isTrained)
             {
-                string result;
+                
                 var testImage = imageData.Convert<Gray, byte>();
                 var predictionResult = _recognizer.Predict(testImage);
 
                 if (predictionResult.Label > 0)
                 {
-                    result = "recognized user";
-                }
-                else
-                {
-                    result = "unknown";
+                    result = true;
                 }
             }
+
+            return true;
+        }
+
+        public void TestModelPerformance()
+        {
+            int testPositves = 0;
+            int testCount = _testData.Count();
+
+            foreach(var data in _testData)
+            {
+                bool prediction = Predict(data);
+                if (prediction)
+                {
+                    testPositves++;
+                }
+            }
+            var average = (testPositves / testCount) * 100;
+            Debug.WriteLine($"[INFO]: Model Testing {average}");
         }
         #endregion
     }
