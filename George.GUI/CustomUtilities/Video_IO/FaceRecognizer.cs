@@ -21,7 +21,7 @@ namespace George.GUI.CustomUtilities.Video_IO
 
         private List<int> _trainingLabel;
         private List<Mat> _trainingData;
-        private List<Image<Bgr, Byte>> _testData;
+        private List<Image<Gray, Byte>> _testData;
 
         private VideoProcessor _imageProcessor;
         private EigenFaceRecognizer _recognizer;
@@ -34,7 +34,7 @@ namespace George.GUI.CustomUtilities.Video_IO
 
             _trainingLabel = new List<int>();
             _trainingData = new List<Mat>();
-            _testData = new List<Image<Bgr, Byte>>();
+            _testData = new List<Image<Gray, Byte>>();
 
             _recognizer = new EigenFaceRecognizer();
         }
@@ -49,29 +49,30 @@ namespace George.GUI.CustomUtilities.Video_IO
         {
             int faceId = 1;
             int sampleSize = 200;
+            var grayImagedata = imageData.Convert<Gray, byte>()
+                                .Resize(200, 200, Emgu.CV.CvEnum.Inter.Cubic);
 
-            if ((_trainingData.Count()<=sampleSize * 0.75) && (_testData.Count() <= sampleSize * 0.25))
+            var trainImage = grayImagedata.Mat;
+
+            if (_trainingData.Count() <= sampleSize*0.75)
             {
-                var grayImagedata = imageData.Convert<Gray, byte>()
-                    .Resize(200, 200, Emgu.CV.CvEnum.Inter.Cubic)
-                    .Mat;
-
-                if (_trainingData.Count() <= sampleSize * 0.75)
-                {
-                    _trainingData.Add(grayImagedata);
-                }
-                else
-                {
-                    _testData.Add(imageData);
-                }
-
+                _trainingData.Add(trainImage);
                 _trainingLabel.Add(faceId);
+            }
+            else if 
+            (
+                _trainingData.Count() >= sampleSize*0.75 && 
+                _testData.Count() <= sampleSize*0.25
+            )
+            {
+                _testData.Add(grayImagedata);
+                _testData.Count();
             }
             else
             {
+                _imageProcessor.SetProcess(_imageProcessor.DummyProcess);
                 Console.Beep();
                 TrainModel();
-                _imageProcessor.SetProcess(_imageProcessor.DummyProcess);
             }
         }
         public void LoadModel()
@@ -111,23 +112,21 @@ namespace George.GUI.CustomUtilities.Video_IO
                 Console.Beep();
             }
         }
-        public Boolean Predict(Image<Bgr, Byte> imageData)
+        public Boolean Predict(Image<Gray, Byte> imageData)
         {
             Boolean result = false;
 
             if (_isTrained)
             {
-                
-                var testImage = imageData.Convert<Gray, byte>();
-                var predictionResult = _recognizer.Predict(testImage);
-
-                if (predictionResult.Label > 0)
+                var predictionResult = _recognizer.Predict(imageData);
+                Debug.WriteLine($"test = {predictionResult.Label} : {predictionResult.Distance}");
+                if (predictionResult.Label != -1 && predictionResult.Distance < 2000)
                 {
                     result = true;
                 }
             }
 
-            return true;
+            return result;
         }
 
         public void TestModelPerformance()
@@ -143,8 +142,8 @@ namespace George.GUI.CustomUtilities.Video_IO
                     testPositves++;
                 }
             }
-            var average = (testPositves / testCount) * 100;
-            Debug.WriteLine($"[INFO]: Model Testing {average}");
+            double average = (testPositves / testCount) * 100;
+            Debug.WriteLine($"[INFO]: Model Testing Results: {testPositves}/{testCount}");
         }
         #endregion
     }
