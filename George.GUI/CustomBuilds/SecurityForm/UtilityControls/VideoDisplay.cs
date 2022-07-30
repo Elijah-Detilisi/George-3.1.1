@@ -10,19 +10,17 @@ using System.Windows.Forms;
 
 namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 {
-    using George.GUI.CustomUtilities.Video_IO;
+    using George.GUI.CustomUtilities.Video;
 
     public partial class VideoDisplay : UserControl
     {
         #region Instances
         private VideoFeed _videoFeed;
-        private CustomUtilities.Video.VideoFeed _videoFeed2;
         #endregion
 
         public VideoDisplay()
         {
             _videoFeed = new VideoFeed();
-            _videoFeed2 = new CustomUtilities.Video.VideoFeed();
 
             InitializeComponent();
             this.Load += VideoDisplay_Load; 
@@ -40,31 +38,22 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         }
         #endregion
 
-        #region Video Feed Methods
+        #region Display Methods
         public void DisplayFeed()
         {
-            try
-            {
-               videoPictureBox.Image = _videoFeed2.GetCurrentFrameAsBitmap();
-            }
-            catch (Exception)
-            {
-                DisplayFeed();
-            }
-        }
-        public void LoadVideoFeed()
-        {
-            _videoFeed.SetDisplayWidget(videoPictureBox);
-            _videoFeed.OpenCamera();
+            videoPictureBox.BackgroundImage = _videoFeed.GetCurrentFrameAsBitmap();
         }
         public void DisplayDefualtBg()
         {
             videoPictureBox.BackgroundImage = Properties.Resources.face_recognition;
             videoPictureBox.BackgroundImageLayout = ImageLayout.Zoom;
         }
+        #endregion
+
+        #region Video Control Methods
         public void ResumeVideoFeed()
         {
-            //_videoFeed.OpenCamera();
+            _videoFeed.OpenCamera();
         }
         public void StopVideoFeed()
         {
@@ -73,24 +62,37 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         }
         #endregion
 
-        #region Event Handler Methods
-        private void VideoDisplay_Load(object? sender, EventArgs e)
-        {
-            videoBgWorker.RunWorkerAsync();
-            _videoFeed2.OpenCamera();
-           
-        }
-        #endregion
-
         #region Background Worker Methods
         private void videoBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            DisplayFeed();
+            if (!videoBgWorker.CancellationPending)
+            {
+                DisplayFeed();
+            }            
         }
         private void videoBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             videoBgWorker.RunWorkerAsync();
         }
         #endregion
+
+        #region Event Handler Methods
+        private void VideoDisplay_Load(object? sender, EventArgs e)
+        {
+            InitializeVideoFeed();
+            videoBgWorker.RunWorkerAsync();
+        }
+        private void InitializeVideoFeed()
+        {
+            _videoFeed.SetDimension(
+               width: videoPictureBox.Width,
+               hieght: videoPictureBox.Height
+            );
+
+            _videoFeed.OpenCamera();
+        }
+        #endregion
+
+        
     }
 }

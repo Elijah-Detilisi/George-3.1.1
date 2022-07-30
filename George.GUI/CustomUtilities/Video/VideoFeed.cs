@@ -26,13 +26,27 @@ namespace George.GUI.CustomUtilities.Video
             _videoCapture = new VideoCapture();
             _imageDimensions = new Dimensions();
             _captureFrame = new Mat();
-            SetDimension(500, 500);
+
+            SetDimension(400, 400);
         }
 
         #region Setter and Getter Methods
-        public Image<Bgr, byte> GetCurrentImageFrame()
+        public void SetDimension(int width, int hieght)
         {
-            return _curretImageFrame;
+            _imageDimensions.width = width;
+            _imageDimensions.height = hieght;
+        }
+
+        public Image<Bgr, byte>? GetCurrentImageFrame()
+        {
+            if (_curretImageFrame != null)
+            {
+                return _curretImageFrame;
+            }
+            else
+            {
+                return null;
+            }
         }
         public Bitmap? GetCurrentFrameAsBitmap()
         {
@@ -45,11 +59,7 @@ namespace George.GUI.CustomUtilities.Video
                 return null;
             }
         }
-        public void SetDimension(int width, int hieght)
-        {
-            _imageDimensions.width = width;
-            _imageDimensions.height = hieght;
-        }
+       
         #endregion
 
         #region Camera Control Methods
@@ -78,7 +88,8 @@ namespace George.GUI.CustomUtilities.Video
         #region Video Handler Methods
         private void _videoCapture_ImageGrabbed(object? sender, EventArgs e)
         {
-            _videoCapture.Retrieve(_captureFrame, 0);
+            int cameraIndex = 0;
+            _videoCapture.Retrieve(_captureFrame, cameraIndex);
             _curretImageFrame = _captureFrame.ToImage<Bgr, Byte>().Resize(
                 _imageDimensions.width,
                 _imageDimensions.height,
