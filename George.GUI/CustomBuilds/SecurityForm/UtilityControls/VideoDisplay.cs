@@ -16,11 +16,13 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
     {
         #region Instances
         private VideoFeed _videoFeed;
+        private ImageProcessor _imageProcessor;
         #endregion
 
         public VideoDisplay()
         {
             _videoFeed = new VideoFeed();
+            _imageProcessor = new ImageProcessor();
 
             InitializeComponent();
             this.Load += VideoDisplay_Load; 
@@ -41,7 +43,15 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         #region Display Methods
         public void DisplayFeed()
         {
-            videoPictureBox.BackgroundImage = _videoFeed.GetCurrentFrameAsBitmap();
+            var feed = _videoFeed.GetCurrentImageFrame();
+
+            if (feed != null)
+            {
+                feed = _imageProcessor.GetDetectFaces(feed);
+                videoPictureBox.BackgroundImage = _imageProcessor.ConvertBgrImageToBitMap(feed);
+            }
+
+            
         }
         public void DisplayDefualtBg()
         {

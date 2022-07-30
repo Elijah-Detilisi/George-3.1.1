@@ -40,6 +40,10 @@ namespace George.GUI.CustomUtilities.Video
                 return null;
             }
         }
+        public Bitmap ConvertBgrImageToBitMap(Image<Bgr, byte> imageFrame)
+        {
+            return imageFrame.ToBitmap();
+        }
         #endregion
 
         #region Face Detection Method
