@@ -16,11 +16,14 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
     {
         #region Instances
         private VideoFeed _videoFeed;
+        private CustomUtilities.Video.VideoFeed _videoFeed2;
         #endregion
 
         public VideoDisplay()
         {
             _videoFeed = new VideoFeed();
+            _videoFeed2 = new CustomUtilities.Video.VideoFeed();
+
             InitializeComponent();
             this.Load += VideoDisplay_Load; 
         }
@@ -38,6 +41,17 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         #endregion
 
         #region Video Feed Methods
+        public void DisplayFeed()
+        {
+            try
+            {
+               videoPictureBox.Image = _videoFeed2.GetCurrentFrameAsBitmap();
+            }
+            catch (Exception)
+            {
+                DisplayFeed();
+            }
+        }
         public void LoadVideoFeed()
         {
             _videoFeed.SetDisplayWidget(videoPictureBox);
@@ -50,22 +64,33 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         }
         public void ResumeVideoFeed()
         {
-            _videoFeed.OpenCamera();
+            //_videoFeed.OpenCamera();
         }
         public void StopVideoFeed()
         {
             _videoFeed.CloseCamera();
             DisplayDefualtBg();
         }
-        
         #endregion
 
         #region Event Handler Methods
         private void VideoDisplay_Load(object? sender, EventArgs e)
         {
-            LoadVideoFeed();
+            videoBgWorker.RunWorkerAsync();
+            _videoFeed2.OpenCamera();
+           
         }
         #endregion
 
+        #region Background Worker Methods
+        private void videoBgWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            DisplayFeed();
+        }
+        private void videoBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            videoBgWorker.RunWorkerAsync();
+        }
+        #endregion
     }
 }

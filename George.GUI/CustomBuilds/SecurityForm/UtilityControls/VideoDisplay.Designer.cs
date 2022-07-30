@@ -32,6 +32,7 @@
             this.progressBar = new CircularProgressBar_NET5.CircularProgressBar();
             this.progressLabel = new System.Windows.Forms.Label();
             this.videoPictureBox = new System.Windows.Forms.PictureBox();
+            this.videoBgWorker = new System.ComponentModel.BackgroundWorker();
             this.progressPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.videoPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -108,6 +109,12 @@
             this.videoPictureBox.TabIndex = 2;
             this.videoPictureBox.TabStop = false;
             // 
+            // videoBgWorker
+            // 
+            this.videoBgWorker.WorkerSupportsCancellation = true;
+            this.videoBgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.videoBgWorker_DoWork);
+            this.videoBgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.videoBgWorker_RunWorkerCompleted);
+            // 
             // VideoDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -129,5 +136,6 @@
         private Label progressLabel;
         private PictureBox videoPictureBox;
         private CircularProgressBar_NET5.CircularProgressBar progressBar;
+        private System.ComponentModel.BackgroundWorker videoBgWorker;
     }
 }

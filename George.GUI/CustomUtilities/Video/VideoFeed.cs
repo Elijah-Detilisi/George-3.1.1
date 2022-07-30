@@ -26,15 +26,24 @@ namespace George.GUI.CustomUtilities.Video
             _videoCapture = new VideoCapture();
             _imageDimensions = new Dimensions();
             _captureFrame = new Mat();
-            
             SetDimension(500, 500);
         }
 
         #region Setter and Getter Methods
-        public Image<Bgr, byte> CurretImageFrame
+        public Image<Bgr, byte> GetCurrentImageFrame()
         {
-            set { _curretImageFrame = value; }
-            get { return _curretImageFrame; }
+            return _curretImageFrame;
+        }
+        public Bitmap? GetCurrentFrameAsBitmap()
+        {
+            if(_curretImageFrame != null)
+            {
+                return _curretImageFrame.ToBitmap();
+            }
+            else
+            {
+                return null;
+            }
         }
         public void SetDimension(int width, int hieght)
         {
