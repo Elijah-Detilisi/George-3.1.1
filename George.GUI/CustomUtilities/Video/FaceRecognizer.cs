@@ -59,16 +59,97 @@ namespace George.GUI.CustomUtilities.Video
             
             if (sampleSize > 0)
             {
+                int faceId = 1;
+                int upperQuartile = (int)(sampleSize * 0.75);
 
+                foreach (Image<Gray, Byte> faceData in modelData)
+                {
+                    if (_trainingData.Count< upperQuartile)
+                    {
+                        _trainingData.Add(faceData.Mat);
+                    }
+                    else
+                    {
+                        _testData.Add(faceData);
+                    }
+                    _trainingLabel.Add(faceId);
+                }
             }
             else
             {
+                throw new Exception("[INFO]: Insufficient model data!");
+            }
+        }
+        public bool IsTrained
+        {
+            get { return _isTrained; }
+        }
+        #endregion
 
+        #region Recognition Methods
+        public void TrainModel()
+        {
+            if (_trainingData.Count > 0)
+            {
+                try
+                {
+                    Debug.WriteLine("[INFO]: Model training...");
+                    _recognizer.Train(
+                        new VectorOfMat(_trainingData.ToArray()),
+                        new VectorOfInt(_trainingLabel.ToArray())
+                    );
+
+                    _recognizer.Write(_modelName);
+                    _isTrained = true;
+                    Debug.WriteLine("[INFO]: Training complete!");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("[INFO]: Error in FaceRecognizer.TrainModel(): " + ex.Message);
+                    Console.Beep();
+                    Console.Beep();
+                }
+            }
+            else
+            {
+                throw new Exception("[INFO] : PLEASE SET MODEL DATA BEFORE TRAINING.");
             }
         }
 
+        public Boolean Predict(Image<Gray, Byte> imageData)
+        {
+            Boolean result = false;
+
+            if (_isTrained)
+            {
+                var predictionResult = _recognizer.Predict(imageData);
+                Debug.WriteLine($"test = {predictionResult.Label} : {predictionResult.Distance}");
+                if (predictionResult.Label != -1 && predictionResult.Distance < 2000)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
         #endregion
 
+        #region Performance Methods
+        public void TestModelPerformance()
+        {
+            int testPositves = 0;
+            int testCount = _testData.Count();
 
+            foreach (var data in _testData)
+            {
+                bool prediction = Predict(data);
+                if (prediction)
+                {
+                    testPositves++;
+                }
+            }
+            Debug.WriteLine($"[INFO]: Model Testing Results: {testPositves}/{testCount}");
+        }
+        #endregion
     }
 }
