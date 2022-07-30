@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace George.GUI.CustomUtilities.Video_IO
 {
     using Emgu.CV;
-    using Emgu.CV.Structure;
-    using Emgu.CV.Face;
-    using System.Diagnostics;
     using Emgu.CV.Util;
+    using Emgu.CV.Face;
+    using Emgu.CV.Structure;
+    using System.Diagnostics;
 
     public class FaceRecognizer
     {

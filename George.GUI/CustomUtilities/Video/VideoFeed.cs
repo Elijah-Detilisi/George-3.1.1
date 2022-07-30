@@ -4,45 +4,65 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace George.GUI.CustomUtilities.Video_IO
+namespace George.GUI.CustomUtilities.Video
 {
     using Emgu.CV;
     using Emgu.CV.CvEnum;
     using Emgu.CV.Structure;
+    using System.Diagnostics;
 
     public class VideoFeed
     {
+
         #region Instances
-        private VideoCapture _videoCapture;
-        private Image<Bgr, byte> _curretImageFrame;
         private Mat _captureFrame;
-
-        private Control _displayWidget;
-        private VideoProcessor _videoProcessor;
-        private FaceRecognizer _faceRecognizer;
-
+        private VideoCapture _videoCapture;
+        private Dimensions _imageDimensions;
+        private Image<Bgr, byte> _curretImageFrame;
         #endregion
 
         public VideoFeed()
         {
             _videoCapture = new VideoCapture();
+            _imageDimensions = new Dimensions();
             _captureFrame = new Mat();
-            _videoProcessor = new VideoProcessor();
-            _faceRecognizer = new FaceRecognizer();
-
-            _faceRecognizer.SetImageProcessor(_videoProcessor);
-
+            
+            SetDimension(500, 500);
         }
 
         #region Setter and Getter Methods
-        public void SetDisplayWidget(Control control)
-        {
-            _displayWidget = control;
-        }
         public Image<Bgr, byte> CurretImageFrame
         {
             set { _curretImageFrame = value; }
             get { return _curretImageFrame; }
+        }
+        public void SetDimension(int width, int hieght)
+        {
+            _imageDimensions.width = width;
+            _imageDimensions.height = hieght;
+        }
+        #endregion
+
+        #region Camera Control Methods
+        public void OpenCamera()
+        {
+            Debug.WriteLine("[INFO]: Opening camera...");
+
+            if (_videoCapture.IsOpened)
+            {
+                _videoCapture.ImageGrabbed += _videoCapture_ImageGrabbed;
+                _videoCapture.Start();
+            }
+        }
+        public void CloseCamera()
+        {
+            Debug.WriteLine("[INFO]: Closing camera...");
+            Task.Factory.StartNew(() =>
+            {
+                _videoCapture.Stop();
+                _videoCapture.Dispose();
+                _videoCapture = new VideoCapture();
+            });
         }
         #endregion
 
@@ -51,34 +71,18 @@ namespace George.GUI.CustomUtilities.Video_IO
         {
             _videoCapture.Retrieve(_captureFrame, 0);
             _curretImageFrame = _captureFrame.ToImage<Bgr, Byte>().Resize(
-                _displayWidget.Width,
-                _displayWidget.Height,
+                _imageDimensions.width,
+                _imageDimensions.height,
                 Inter.Cubic
             );
-
-            _videoProcessor.DetectFaces(ref _curretImageFrame);
-            _displayWidget.BackgroundImage = _curretImageFrame.ToBitmap();
         }
         #endregion
 
-        #region Camera Methods
-        public void OpenCamera()
+        #region Supporting Entities
+        private struct Dimensions
         {
-            if (_videoCapture.IsOpened)
-            {
-                _videoCapture.ImageGrabbed += _videoCapture_ImageGrabbed;
-                _videoCapture.Start();
-            }     
-        }
-
-        public void CloseCamera()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                _videoCapture.Stop();
-                _videoCapture.Dispose();
-                _videoCapture = new VideoCapture();
-            });
+            public int width;
+            public int height;
         }
         #endregion
 
