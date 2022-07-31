@@ -168,6 +168,11 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             }
         }
 
+        private void PredictProcedure(Image<Gray, byte> faceImage)
+        {
+
+        }
+
         #endregion
 
     }
