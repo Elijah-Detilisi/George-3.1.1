@@ -162,7 +162,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             {
                 _faceRecognizer.PrepareModelData();
 
-                StopVideoFeed();s
+                StopVideoFeed();
                 DisplayTraining(1); //Display training
                 _faceRecognizer.TrainModel();  //Start training  
                 DisplayTraining(2); //Display Complete
