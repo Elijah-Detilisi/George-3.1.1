@@ -52,7 +52,7 @@
             // 
             this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureBox.Image = global::George.GUI.Properties.Resources.signUp;
+            this.pictureBox.Image = global::George.GUI.Properties.Resources.success;
             this.pictureBox.Location = new System.Drawing.Point(17, 13);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(100, 74);

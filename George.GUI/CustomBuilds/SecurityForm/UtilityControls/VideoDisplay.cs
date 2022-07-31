@@ -75,6 +75,30 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             videoPictureBox.BackgroundImage = Properties.Resources.face_recognition;
             videoPictureBox.BackgroundImageLayout = ImageLayout.Zoom;
         }
+        private void DisplayTraining(int step)
+        {
+            if (step == 1)
+            {
+                SetProgressText("Training in progress...");
+                progressBar.Invoke((MethodInvoker)(() => {
+                    progressBar.Hide();
+                }));
+
+                videoPictureBox.BackgroundImage = Properties.Resources.machine_learning;
+            }
+            else if (step == 2)
+            {
+                SetProgressText("Training is complete!");
+                SetProgressValue(0);
+                progressBar.Invoke((MethodInvoker)(() => {
+                    progressBar.Show();
+                }));
+
+                videoPictureBox.Image = Properties.Resources.success;
+            }
+
+            videoPictureBox.BackgroundImageLayout = ImageLayout.Zoom;
+        }
         #endregion
 
         #region Video Control Methods
@@ -125,7 +149,6 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         {
 
         }
-
         private void TrainingProcedure(Image<Gray, byte> faceImage)
         {
             int count = (int)(_faceRecognizer.GetModelDataCount() * 0.5);
@@ -139,21 +162,10 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             {
                 _faceRecognizer.PrepareModelData();
 
-                //Display training
-                DisplayDefualtBg();
-                SetProgressText("Model in training...");
-                progressBar.Invoke((MethodInvoker)(() => {
-                    progressBar.Hide();
-                }));
-
-                //Start training  
-                _faceRecognizer.TrainModel();
-
-                //Display Complete
-                SetProgressText("Training  complete!");
-                progressBar.Invoke((MethodInvoker)(() => {
-                    progressBar.Show();
-                }));
+                StopVideoFeed();s
+                DisplayTraining(1); //Display training
+                _faceRecognizer.TrainModel();  //Start training  
+                DisplayTraining(2); //Display Complete
             }
         }
         #endregion
