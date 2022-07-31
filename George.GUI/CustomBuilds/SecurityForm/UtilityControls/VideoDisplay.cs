@@ -94,7 +94,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
                     progressBar.Show();
                 }));
 
-                videoPictureBox.Image = Properties.Resources.success;
+                videoPictureBox.Image = Properties.Resources.finish_line;
             }
 
             videoPictureBox.BackgroundImageLayout = ImageLayout.Zoom;
@@ -109,7 +109,6 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         public void StopVideoFeed()
         {
             _videoFeed.CloseCamera();
-            DisplayDefualtBg();
         }
         #endregion
 
@@ -168,6 +167,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
                 DisplayTraining(2); //Display Complete
             }
         }
+
         #endregion
 
     }
