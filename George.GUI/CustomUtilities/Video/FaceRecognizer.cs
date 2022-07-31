@@ -31,7 +31,7 @@ namespace George.GUI.CustomUtilities.Video
         public FaceRecognizer()
         {
             _isTrained = false;
-            _modelName = Directory.GetCurrentDirectory() + @"\Resources\XML Files\Recognizer";
+            _modelName = Directory.GetCurrentDirectory() + @"\Resources\XML Files\George_Recognizer";
 
             _trainingLabel = new List<int>();
             _trainingData = new List<Mat>();
@@ -70,8 +70,9 @@ namespace George.GUI.CustomUtilities.Video
         {
             if (imageData != null && GetModelDataCount() < 200)
             {
-                imageData.Resize(200, 200, Inter.Cubic);
-                _modelData.Add(imageData);
+                _modelData.Add(
+                    imageData.Resize(200, 200, Inter.Cubic)
+                );
             }
         }
         public void PrepareModelData()
@@ -88,12 +89,12 @@ namespace George.GUI.CustomUtilities.Video
                     if (_trainingData.Count< upperQuartile)
                     {
                         _trainingData.Add(faceData.Mat);
+                        _trainingLabel.Add(faceId);
                     }
                     else
                     {
                         _testData.Add(faceData);
                     }
-                    _trainingLabel.Add(faceId);
                 }
             }
             else

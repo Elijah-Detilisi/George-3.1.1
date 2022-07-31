@@ -93,12 +93,12 @@ namespace George.GUI.CustomBuilds.SecurityForm
         }
         private void DisplaySignUpVideoDisplay()
         {
-            _videoDisplay.SetProgressText("Scanning:");
+            //_videoDisplay.SetProgressText("Scanning:");
             DisplayVideoFeed();
         }
         private void DisplayLoginVideoDisplay()
         {
-            _videoDisplay.SetProgressText("Verification:");
+            //_videoDisplay.SetProgressText("Verification:");
             DisplayVideoFeed();
         }
         #endregion
