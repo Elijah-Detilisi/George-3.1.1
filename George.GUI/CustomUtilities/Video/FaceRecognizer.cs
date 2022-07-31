@@ -35,7 +35,6 @@ namespace George.GUI.CustomUtilities.Video
 
             _trainingLabel = new List<int>();
             _trainingData = new List<Mat>();
-
             _testData = new List<Image<Gray, Byte>>();
             _modelData = new List<Image<Gray, Byte>>();
 
@@ -120,6 +119,7 @@ namespace George.GUI.CustomUtilities.Video
                     _recognizer.Write(_modelName);
                     _isTrained = true;
                     Debug.WriteLine("[INFO]: Training complete!");
+                    TestModelPerformance();
                 }
                 catch (Exception ex)
                 {
