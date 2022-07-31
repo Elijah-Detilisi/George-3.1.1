@@ -10,19 +10,24 @@ using System.Windows.Forms;
 
 namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 {
+    using System.Diagnostics;
     using George.GUI.CustomUtilities.Video;
-
+    
     public partial class VideoDisplay : UserControl
     {
         #region Instances
         private VideoFeed _videoFeed;
         private ImageProcessor _imageProcessor;
+        private FaceRecognizer _faceRecognizer;
+        private string _proccess;
         #endregion
 
         public VideoDisplay()
         {
+            _proccess = "Training";
             _videoFeed = new VideoFeed();
             _imageProcessor = new ImageProcessor();
+            _faceRecognizer = new FaceRecognizer();
 
             InitializeComponent();
             this.Load += VideoDisplay_Load; 
@@ -35,8 +40,10 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         }
         public void SetProgressValue(int value)
         {
-            progressBar.Value = value;
-            progressBar.Text = $"{value}%";
+            progressBar.Invoke((MethodInvoker)(() => {
+                progressBar.Value = value;
+                progressBar.Text = $"{value}%";
+            }));
         }
         #endregion
 
@@ -44,14 +51,32 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         public void DisplayFeed()
         {
             var feed = _videoFeed.GetCurrentImageFrame();
-
             if (feed != null)
             {
-                feed = _imageProcessor.GetDetectFaces(feed);
+                _imageProcessor.ShowDetectedFaces(feed);
+                var faceImage = _imageProcessor.GetFaceROI(feed);
+
+                if (_proccess == "Training")
+                {
+                    int count = (int)(_faceRecognizer.GetModelDataCount() * 0.5);
+                    _faceRecognizer.AppendToModelData(faceImage);
+                    SetProgressValue(count);
+                    Debug.WriteLine(count);
+
+                    if (count==100)
+                    {
+                        _proccess = "Null";
+                        _faceRecognizer.PrepareModelData();
+                        _faceRecognizer.TrainModel();
+                    }
+                }
+                else if (_proccess == "Predicting")
+                {
+                    _faceRecognizer.Predict(faceImage);
+                }
+
                 videoPictureBox.BackgroundImage = _imageProcessor.ConvertBgrImageToBitMap(feed);
             }
-
-            
         }
         public void DisplayDefualtBg()
         {
@@ -103,6 +128,5 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         }
         #endregion
 
-        
     }
 }

@@ -71,7 +71,7 @@
             this.utilityButton.Name = "utilityButton";
             this.utilityButton.Size = new System.Drawing.Size(75, 29);
             this.utilityButton.TabIndex = 9;
-            this.utilityButton.Text = "Login->";
+            this.utilityButton.Text = "Generic";
             this.utilityButton.UseVisualStyleBackColor = false;
             this.utilityButton.Click += new System.EventHandler(this.utilityButton_Click);
             // 

@@ -48,18 +48,7 @@ namespace George.GUI.CustomUtilities.Video
                 return null;
             }
         }
-        public Bitmap? GetCurrentFrameAsBitmap()
-        {
-            if(_curretImageFrame != null)
-            {
-                return _curretImageFrame.ToBitmap();
-            }
-            else
-            {
-                return null;
-            }
-        }
-       
+
         #endregion
 
         #region Camera Control Methods

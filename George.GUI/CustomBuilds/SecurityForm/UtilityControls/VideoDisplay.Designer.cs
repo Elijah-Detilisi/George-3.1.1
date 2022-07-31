@@ -71,17 +71,18 @@
             this.progressBar.SecondaryFont = new System.Drawing.Font("Segoe UI", 1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.progressBar.Size = new System.Drawing.Size(86, 73);
             this.progressBar.StartAngle = 270;
-            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar.Step = 1;
+            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.progressBar.SubscriptMargin = new System.Windows.Forms.Padding(0);
             this.progressBar.SubscriptText = "";
             this.progressBar.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.progressBar.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
             this.progressBar.SuperscriptText = "";
-            this.progressBar.TabIndex = 5;
-            this.progressBar.Text = "68%";
+            this.progressBar.TabIndex = 1;
+            this.progressBar.Text = "1%";
             this.progressBar.TextMargin = new System.Windows.Forms.Padding(0);
-            this.progressBar.Value = 68;
+            this.progressBar.Value = 1;
             // 
             // progressLabel
             // 

@@ -11,6 +11,7 @@ namespace George.GUI.CustomUtilities.Video
     using Emgu.CV.Face;
     using Emgu.CV.Structure;
     using System.Diagnostics;
+    using Emgu.CV.CvEnum;
 
     public class FaceRecognizer
     {
@@ -20,7 +21,9 @@ namespace George.GUI.CustomUtilities.Video
 
         private List<int> _trainingLabel;
         private List<Mat> _trainingData;
+
         private List<Image<Gray, Byte>> _testData;
+        private List<Image<Gray, Byte>> _modelData;
 
         private EigenFaceRecognizer _recognizer;
         #endregion
@@ -32,7 +35,9 @@ namespace George.GUI.CustomUtilities.Video
 
             _trainingLabel = new List<int>();
             _trainingData = new List<Mat>();
+
             _testData = new List<Image<Gray, Byte>>();
+            _modelData = new List<Image<Gray, Byte>>();
 
             _recognizer = new EigenFaceRecognizer();
         }
@@ -53,16 +58,32 @@ namespace George.GUI.CustomUtilities.Video
         #endregion
 
         #region Setter and Getter Methods
-        public void SetModelData(List<Image<Gray, Byte>> modelData)
+        public  int GetModelDataCount()
         {
-            int sampleSize = modelData.Count;
+            return _modelData.Count;
+        }
+        public bool IsTrained
+        {
+            get { return _isTrained; }
+        }
+        public void AppendToModelData(Image<Gray, Byte>? imageData)
+        {
+            if (imageData != null && GetModelDataCount() < 200)
+            {
+                imageData.Resize(200, 200, Inter.Cubic);
+                _modelData.Add(imageData);
+            }
+        }
+        public void PrepareModelData()
+        {
+            int sampleSize = GetModelDataCount();
             
-            if (sampleSize > 0)
+            if (sampleSize >= 190)
             {
                 int faceId = 1;
                 int upperQuartile = (int)(sampleSize * 0.75);
 
-                foreach (Image<Gray, Byte> faceData in modelData)
+                foreach (Image<Gray, Byte> faceData in _modelData)
                 {
                     if (_trainingData.Count< upperQuartile)
                     {
@@ -79,10 +100,6 @@ namespace George.GUI.CustomUtilities.Video
             {
                 throw new Exception("[INFO]: Insufficient model data!");
             }
-        }
-        public bool IsTrained
-        {
-            get { return _isTrained; }
         }
         #endregion
 
@@ -116,12 +133,13 @@ namespace George.GUI.CustomUtilities.Video
             }
         }
 
-        public Boolean Predict(Image<Gray, Byte> imageData)
+        public Boolean Predict(Image<Gray, Byte>? imageData)
         {
             Boolean result = false;
 
-            if (_isTrained)
+            if (_isTrained && imageData != null)
             {
+                imageData.Resize(200, 200, Emgu.CV.CvEnum.Inter.Cubic);
                 var predictionResult = _recognizer.Predict(imageData);
                 Debug.WriteLine($"test = {predictionResult.Label} : {predictionResult.Distance}");
                 if (predictionResult.Label != -1 && predictionResult.Distance < 2000)
