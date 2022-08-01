@@ -169,7 +169,7 @@ namespace George.GUI.CustomUtilities.Video
             }
             int result = (int)((testPositves * 0.02) * 100);
 
-            Debug.WriteLine($"[INFO]: Model Testing Results: {result}%");
+            Debug.WriteLine($"[INFO]: Model Testing Results: {testPositves}/{testCount} | {result}%");
 
             return result;
         }
