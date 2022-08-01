@@ -19,7 +19,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
     public partial class VideoDisplay : UserControl
     {
         #region Instances
-        private string _currentProcedure;
+        private Action<Image<Gray, Byte>> _currentProcedure;
         private VideoFeed _videoFeed;
         private ImageProcessor _imageProcessor;
         private FaceRecognizer _faceRecognizer;
@@ -28,7 +28,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 
         public VideoDisplay()
         {
-            _currentProcedure = "Training";
+            _currentProcedure = IdleProcedure;
             _videoFeed = new VideoFeed();
             _imageProcessor = new ImageProcessor();
             _faceRecognizer = new FaceRecognizer();
@@ -60,13 +60,9 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             if (feed != null)
             {
                 _imageProcessor.ShowDetectedFaces(feed);
+                var faceImage = _imageProcessor.GetFaceROI(feed);
+                _currentProcedure(faceImage);
                 
-                if (_currentProcedure == "Training")
-                {
-                    var faceImage = _imageProcessor.GetFaceROI(feed);
-                    TrainingProcedure(faceImage);
-                }
-
                 videoPictureBox.BackgroundImage = _imageProcessor.ConvertBgrImageToBitMap(feed);
             }
         }
