@@ -119,7 +119,7 @@ namespace George.GUI.CustomUtilities.Video
                     _recognizer.Write(_modelName);
                     _isTrained = true;
                     Debug.WriteLine("[INFO]: Training complete!");
-                    TestModelPerformance();
+                    GetModelPerformance();
                 }
                 catch (Exception ex)
                 {
@@ -154,7 +154,7 @@ namespace George.GUI.CustomUtilities.Video
         #endregion
 
         #region Performance Methods
-        public int TestModelPerformance()
+        public int GetModelPerformance()
         {
             int testPositves = 0;
             int testCount = _testData.Count();
