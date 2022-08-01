@@ -154,7 +154,7 @@ namespace George.GUI.CustomUtilities.Video
         #endregion
 
         #region Performance Methods
-        public void TestModelPerformance()
+        public int TestModelPerformance()
         {
             int testPositves = 0;
             int testCount = _testData.Count();
@@ -167,7 +167,11 @@ namespace George.GUI.CustomUtilities.Video
                     testPositves++;
                 }
             }
-            Debug.WriteLine($"[INFO]: Model Testing Results: {testPositves}/{testCount}");
+            int result = (int)((testPositves * 0.02) * 100);
+
+            Debug.WriteLine($"[INFO]: Model Testing Results: {result}%");
+
+            return result;
         }
         #endregion
     }
