@@ -38,7 +38,7 @@
             // 
             // bannerPanel
             // 
-            this.bannerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(25)))), ((int)(((byte)(40)))));
+            this.bannerPanel.BackColor = System.Drawing.Color.Transparent;
             this.bannerPanel.Controls.Add(this.pictureBox);
             this.bannerPanel.Controls.Add(this.utilityButton);
             this.bannerPanel.Controls.Add(this.exitButton);
@@ -52,6 +52,7 @@
             // 
             this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureBox.Image = global::George.GUI.Properties.Resources.ai;
             this.pictureBox.Location = new System.Drawing.Point(17, 13);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(100, 74);
@@ -93,11 +94,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(40)))), ((int)(((byte)(60)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(98)))), ((int)(((byte)(155)))));
             this.ClientSize = new System.Drawing.Size(420, 450);
             this.Controls.Add(this.bannerPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SecurityForm";
+            this.Opacity = 0.8D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SignUpForm";
             this.TopMost = true;

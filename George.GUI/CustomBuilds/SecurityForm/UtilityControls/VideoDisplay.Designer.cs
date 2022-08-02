@@ -39,7 +39,7 @@
             // 
             // progressPanel
             // 
-            this.progressPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(40)))), ((int)(((byte)(60)))));
+            this.progressPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(98)))), ((int)(((byte)(155)))));
             this.progressPanel.Controls.Add(this.progressBar);
             this.progressPanel.Controls.Add(this.progressLabel);
             this.progressPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -89,6 +89,7 @@
             this.progressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.progressLabel.AutoSize = true;
+            this.progressLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(95)))), ((int)(((byte)(155)))));
             this.progressLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point);
             this.progressLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(213)))), ((int)(((byte)(219)))));
             this.progressLabel.Location = new System.Drawing.Point(59, 28);
@@ -99,7 +100,7 @@
             // 
             // videoPictureBox
             // 
-            this.videoPictureBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(28)))), ((int)(((byte)(43)))));
+            this.videoPictureBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(98)))), ((int)(((byte)(155)))));
             this.videoPictureBox.BackgroundImage = global::George.GUI.Properties.Resources.face_recognition;
             this.videoPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.videoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;

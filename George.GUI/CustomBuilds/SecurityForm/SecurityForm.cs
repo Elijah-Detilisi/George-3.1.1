@@ -70,12 +70,7 @@ namespace George.GUI.CustomBuilds.SecurityForm
             _isLogin = true;
 
             this.utilityButton.Text = "SignUp->";
-            this.pictureBox.Image = global::George.GUI.Properties.Resources.camera;
-            this.bannerPanel.BackColor = Color.FromArgb(
-               ((int)(((byte)(42)))), 
-               ((int)(((byte)(40)))), 
-               ((int)(((byte)(60))))
-            );
+            this.pictureBox.Image = global::George.GUI.Properties.Resources.ai;
         }
         #endregion
 

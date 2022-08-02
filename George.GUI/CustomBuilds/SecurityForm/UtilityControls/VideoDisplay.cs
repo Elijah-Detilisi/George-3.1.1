@@ -19,11 +19,10 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
     public partial class VideoDisplay : UserControl
     {
         #region Instances
-        private Action<Image<Gray, Byte>> _currentProcedure;
         private VideoFeed _videoFeed;
         private ImageProcessor _imageProcessor;
         private FaceRecognizer _faceRecognizer;
-        
+        private Action<Image<Gray, Byte>> _currentProcedure;
         #endregion
 
         public VideoDisplay()
@@ -61,8 +60,8 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             {
                 _imageProcessor.ShowDetectedFaces(feed);
                 var faceImage = _imageProcessor.GetFaceROI(feed);
+
                 _currentProcedure(faceImage);
-                
                 videoPictureBox.BackgroundImage = _imageProcessor.ConvertBgrImageToBitMap(feed);
             }
         }
@@ -91,6 +90,14 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
                 }));
 
                 videoPictureBox.Image = Properties.Resources.finish_line;
+            }
+            else if(step == 3)
+            {
+                SetProgressText("Training failed, retry...");
+                SetProgressValue(0);
+                progressBar.Invoke((MethodInvoker)(() => {
+                    progressBar.Show();
+                }));
             }
 
             videoPictureBox.BackgroundImageLayout = ImageLayout.Zoom;
@@ -136,6 +143,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             );
 
             _videoFeed.OpenCamera();
+            _currentProcedure = TrainingProcedure;
         }
         #endregion
 
@@ -156,14 +164,23 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             else if(!_faceRecognizer.IsTrained)
             {
                 _faceRecognizer.PrepareModelData();
-
                 StopVideoFeed();
                 DisplayTraining(1); //Display training
                 _faceRecognizer.TrainModel();  //Start training  
-                DisplayTraining(2); //Display Complete
+
+                if (_faceRecognizer.GetModelPerformance() > 90)
+                {
+                    DisplayTraining(2); //Display Complete
+                }
+                else
+                {
+                    _faceRecognizer.ResetModel();
+                    DisplayTraining(3);
+                    Debug.WriteLine("Model failed to train");
+                    ResumeVideoFeed();
+                }
             }
         }
-
         private void PredictProcedure(Image<Gray, byte> faceImage)
         {
 

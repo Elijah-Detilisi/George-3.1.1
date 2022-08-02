@@ -54,6 +54,16 @@ namespace George.GUI.CustomUtilities.Video
                 Debug.WriteLine("[INFO]: Error in FaceRecognizer.LoadExistingModel(): " + ex.Message);
             }
         }
+        public void ResetModel()
+        {
+            _isTrained = false;
+            _trainingLabel = new List<int>();
+            _trainingData = new List<Mat>();
+            _testData = new List<Image<Gray, Byte>>();
+            _modelData = new List<Image<Gray, Byte>>();
+
+            _recognizer = new EigenFaceRecognizer();
+        }
         #endregion
 
         #region Setter and Getter Methods
@@ -168,7 +178,6 @@ namespace George.GUI.CustomUtilities.Video
                 }
             }
             int result = (int)((testPositves * 0.02) * 100);
-
             Debug.WriteLine($"[INFO]: Model Testing Results: {testPositves}/{testCount} | {result}%");
 
             return result;
