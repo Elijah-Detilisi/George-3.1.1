@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 {
-    
+
     using Emgu.CV;
     using Emgu.CV.Structure;
     using System.Diagnostics;
@@ -20,18 +20,23 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
     {
         #region Instances
         private VideoFeed _videoFeed;
+        private int _verificationCount;
+        private Boolean _shouldDisplayFeed;
         private ImageProcessor _imageProcessor;
         private FaceRecognizer _faceRecognizer;
-        private Action<Image<Gray, Byte>> _currentProcedure;
+        private Action<Image<Gray, Byte>>? _currentProcedure;
         #endregion
 
         public VideoDisplay()
         {
-            _currentProcedure = IdleProcedure;
+            
             _videoFeed = new VideoFeed();
             _imageProcessor = new ImageProcessor();
             _faceRecognizer = new FaceRecognizer();
-
+            _verificationCount = 0;
+            _shouldDisplayFeed = true;
+            _currentProcedure = IdleProcedure;
+            
             InitializeComponent();
             this.Load += VideoDisplay_Load; 
         }
@@ -60,9 +65,12 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             {
                 _imageProcessor.ShowDetectedFaces(feed);
                 var faceImage = _imageProcessor.GetFaceROI(feed);
-
                 _currentProcedure(faceImage);
-                videoPictureBox.BackgroundImage = _imageProcessor.ConvertBgrImageToBitMap(feed);
+
+                if (_shouldDisplayFeed)
+                {
+                    videoPictureBox.BackgroundImage = _imageProcessor.ConvertBgrImageToBitMap(feed);
+                }   
             }
         }
         public void DisplayDefualtBg()
@@ -83,24 +91,29 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             }
             else if (step == 2)
             {
+                _shouldDisplayFeed = false;
                 SetProgressText("Training is complete!");
-                SetProgressValue(0);
-                progressBar.Invoke((MethodInvoker)(() => {
-                    progressBar.Show();
-                }));
-
-                videoPictureBox.Image = Properties.Resources.finish_line;
+                videoPictureBox.BackgroundImage = Properties.Resources.finish_line;
             }
             else if(step == 3)
             {
-                SetProgressText("Training failed, retry...");
                 SetProgressValue(0);
+                SetProgressText("Training failed, retry...");
                 progressBar.Invoke((MethodInvoker)(() => {
                     progressBar.Show();
                 }));
             }
+        }
 
-            videoPictureBox.BackgroundImageLayout = ImageLayout.Zoom;
+        private void DisplayLoginSuccess()
+        {
+
+            SetProgressText("Login Success!");
+            progressBar.Invoke((MethodInvoker)(() => {
+                progressBar.Hide();
+            }));
+
+            videoPictureBox.BackgroundImage = Properties.Resources.finish_line;
         }
         #endregion
 
@@ -143,16 +156,16 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             );
 
             _videoFeed.OpenCamera();
-            _currentProcedure = TrainingProcedure;
+            _currentProcedure = PredictProcedure;
         }
         #endregion
 
         #region Procedure Methods
-        private void IdleProcedure(Image<Gray, byte> faceImage)
+        private void IdleProcedure(Image<Gray, byte>? faceImage)
         {
 
         }
-        private void TrainingProcedure(Image<Gray, byte> faceImage)
+        private void TrainingProcedure(Image<Gray, byte>? faceImage)
         {
             int count = (int)(_faceRecognizer.GetModelDataCount() * 0.5);
 
@@ -163,27 +176,46 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             }
             else if(!_faceRecognizer.IsTrained)
             {
-                _faceRecognizer.PrepareModelData();
                 StopVideoFeed();
                 DisplayTraining(1); //Display training
+
+                _faceRecognizer.PrepareModelData();
                 _faceRecognizer.TrainModel();  //Start training  
 
                 if (_faceRecognizer.GetModelPerformance() > 90)
                 {
-                    DisplayTraining(2); //Display Complete
+                    DisplayLoginSuccess();
+                    _currentProcedure = IdleProcedure;
                 }
                 else
                 {
+                    DisplayTraining(3); //Display restart training
                     _faceRecognizer.ResetModel();
-                    DisplayTraining(3);
-                    Debug.WriteLine("Model failed to train");
                     ResumeVideoFeed();
                 }
             }
         }
-        private void PredictProcedure(Image<Gray, byte> faceImage)
+        private void PredictProcedure(Image<Gray, byte>? faceImage)
         {
+            bool prediction = _faceRecognizer.Predict(faceImage);
 
+            if (prediction && _verificationCount <100)
+            {
+                _imageProcessor.ChangeBorderColor(1);
+                _verificationCount += 10;
+            }
+            else if (_verificationCount>=100)
+            {
+                StopVideoFeed();
+                DisplayTraining(2); //Display training
+                _currentProcedure = IdleProcedure;
+            }
+            else
+            {
+                _imageProcessor.ChangeBorderColor(2);
+            }
+
+            SetProgressValue(_verificationCount);
         }
 
         #endregion

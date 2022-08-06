@@ -39,6 +39,7 @@ namespace George.GUI.CustomUtilities.Video
             _modelData = new List<Image<Gray, Byte>>();
 
             _recognizer = new EigenFaceRecognizer();
+            LoadExistingModel();
         }
 
         #region Initialization Methods
@@ -46,12 +47,16 @@ namespace George.GUI.CustomUtilities.Video
         {
             try
             {
+                Debug.WriteLine("[INFO]: Loading Model...");
                 _recognizer.Read(_modelName);
                 _isTrained = true;
+                Debug.WriteLine("[INFO]: Loading Complete!");
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("[INFO]: Error in FaceRecognizer.LoadExistingModel(): " + ex.Message);
+                throw ex;
+                
             }
         }
         public void ResetModel()
@@ -150,7 +155,7 @@ namespace George.GUI.CustomUtilities.Video
 
             if (_isTrained && imageData != null)
             {
-                imageData.Resize(200, 200, Emgu.CV.CvEnum.Inter.Cubic);
+                imageData = imageData.Resize(200, 200, Inter.Cubic);
                 var predictionResult = _recognizer.Predict(imageData);
                 Debug.WriteLine($"test = {predictionResult.Label} : {predictionResult.Distance}");
                 if (predictionResult.Label != -1 && predictionResult.Distance < 2000)

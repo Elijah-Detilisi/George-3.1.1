@@ -16,12 +16,13 @@ namespace George.GUI.CustomUtilities.Video
         #region Instances
         private Rectangle[] _detectedFaces;
         private readonly CascadeClassifier _faceCascade;
-        
+        private Bgr _borderColor;
         #endregion
 
         public ImageProcessor()
         {
             _detectedFaces = new Rectangle[3];
+            _borderColor = new Bgr(Color.SteelBlue);
             _faceCascade = new CascadeClassifier(
                 Directory.GetCurrentDirectory() + @"\Resources\XML Files\haarcascade_frontalface_alt.xml"
             );
@@ -42,6 +43,17 @@ namespace George.GUI.CustomUtilities.Video
             else
             {
                 return null;
+            }
+        }
+        public void ChangeBorderColor(int state)
+        {
+            if(state == 1)
+            {
+                _borderColor = new Bgr(Color.SteelBlue);
+            }
+            else
+            {
+                _borderColor = new Bgr(Color.Tomato);
             }
         }
         #endregion
@@ -94,13 +106,12 @@ namespace George.GUI.CustomUtilities.Video
 
             if (_detectedFaces != null && _detectedFaces.Length > 0)
             {
-                Bgr borderColor = new Bgr(Color.SteelBlue);
                 foreach (var face in _detectedFaces)
                 {
                     CvInvoke.Rectangle(
                         img: imageFrame,
                         rect: face,
-                        color: borderColor.MCvScalar,
+                        color: _borderColor.MCvScalar,
                         thickness: 3
                     );
                 }
