@@ -11,7 +11,6 @@ using System.Windows.Forms;
 namespace George.GUI.CustomBuilds.SecurityForm
 {
     using George.GUI.CustomBuilds.SecurityForm.UtilityControls;
-
     public partial class SecurityForm : Form
     {
         #region Instances
@@ -25,11 +24,10 @@ namespace George.GUI.CustomBuilds.SecurityForm
             _isLogin = true;
             _videoDisplay = new VideoDisplay();
             _securityInput = new SecurityInput();
-
             _securityInput.SetNextAction(DisplaySignUpVideoDisplay);
+
             InitializeComponent();
             DisplayLoginForm();
-
         }
 
         #region Event Handlers Methods
@@ -53,10 +51,9 @@ namespace George.GUI.CustomBuilds.SecurityForm
         #endregion
 
         #region Banner Display Methods
-        public void DisplaySignUpBanner()
+        private void DisplaySignUpBanner()
         {
             _isLogin = false;
-
             this.utilityButton.Text = "Login->";
             this.pictureBox.Image = global::George.GUI.Properties.Resources.signUp;
             this.bannerPanel.BackColor = Color.FromArgb(
@@ -65,10 +62,9 @@ namespace George.GUI.CustomBuilds.SecurityForm
                 ((int)(((byte)(40))))
             );
         }
-        public void DisplayLoginBanner()
+        private void DisplayLoginBanner()
         {
             _isLogin = true;
-
             this.utilityButton.Text = "SignUp->";
             this.pictureBox.Image = global::George.GUI.Properties.Resources.ai;
         }
@@ -79,8 +75,8 @@ namespace George.GUI.CustomBuilds.SecurityForm
         {
             StopVideoDisplay();
             _securityInput.Dock = DockStyle.None;
-            _securityInput.Location = new System.Drawing.Point(0, 100);
-            _securityInput.Size = new System.Drawing.Size(420, 350);
+            _securityInput.Location = new Point(0, 100);
+            _securityInput.Size = new Size(420, 350);
             _securityInput.TabIndex = 2;
             _securityInput.Show();
 
@@ -89,11 +85,13 @@ namespace George.GUI.CustomBuilds.SecurityForm
         private void DisplaySignUpVideoDisplay()
         {
             //_videoDisplay.SetProgressText("Scanning:");
+            _videoDisplay.SetVideoProcedureStep(1);
             DisplayVideoFeed();
         }
         private void DisplayLoginVideoDisplay()
         {
             //_videoDisplay.SetProgressText("Verification:");
+            _videoDisplay.SetVideoProcedureStep(2);
             DisplayVideoFeed();
         }
         #endregion
@@ -124,6 +122,11 @@ namespace George.GUI.CustomBuilds.SecurityForm
         {
             DisplayLoginBanner();
             DisplayLoginVideoDisplay();
+        }
+        public void DisplaySignUpForm()
+        {
+            DisplaySignUpBanner();
+            DisplaySignUpVideoDisplay();
         }
     }
 }

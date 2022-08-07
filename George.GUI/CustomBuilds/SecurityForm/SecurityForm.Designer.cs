@@ -52,7 +52,6 @@
             // 
             this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureBox.Image = global::George.GUI.Properties.Resources.ai;
             this.pictureBox.Location = new System.Drawing.Point(17, 13);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(100, 74);
@@ -99,7 +98,7 @@
             this.Controls.Add(this.bannerPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SecurityForm";
-            this.Opacity = 0.8D;
+            this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SignUpForm";
             this.TopMost = true;

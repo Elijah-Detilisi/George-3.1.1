@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -13,9 +11,9 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 
     using Emgu.CV;
     using Emgu.CV.Structure;
-    using System.Diagnostics;
     using George.GUI.CustomUtilities.Video;
-    
+    using System.ComponentModel;
+
     public partial class VideoDisplay : UserControl
     {
         #region Instances
@@ -29,7 +27,6 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 
         public VideoDisplay()
         {
-            
             _videoFeed = new VideoFeed();
             _imageProcessor = new ImageProcessor();
             _faceRecognizer = new FaceRecognizer();
@@ -55,10 +52,25 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
                 progressBar.Text = $"{value}%";
             }));
         }
+        public void SetVideoProcedureStep(int procedureStep)
+        {
+            if (procedureStep == 1)
+            {
+                _currentProcedure = TrainingProcedure;
+            }
+            else if (procedureStep == 2)
+            {
+                _currentProcedure = PredictProcedure;
+            }
+            else if (procedureStep == 0)
+            {
+                _currentProcedure = IdleProcedure;
+            }
+        }
         #endregion
 
         #region Display Methods
-        public void DisplayFeed()
+        private void DisplayFeed()
         {
             var feed = _videoFeed.GetCurrentImageFrame();
             if (feed != null)
@@ -72,11 +84,6 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
                     videoPictureBox.BackgroundImage = _imageProcessor.ConvertBgrImageToBitMap(feed);
                 }   
             }
-        }
-        public void DisplayDefualtBg()
-        {
-            videoPictureBox.BackgroundImage = Properties.Resources.face_recognition;
-            videoPictureBox.BackgroundImageLayout = ImageLayout.Zoom;
         }
         private void DisplayTraining(int step)
         {
@@ -104,7 +111,11 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
                 }));
             }
         }
-
+        public void DisplayDefualtBg()
+        {
+            videoPictureBox.BackgroundImage = Properties.Resources.face_recognition;
+            videoPictureBox.BackgroundImageLayout = ImageLayout.Zoom;
+        }
         private void DisplayLoginSuccess()
         {
 
@@ -113,7 +124,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
                 progressBar.Hide();
             }));
 
-            videoPictureBox.BackgroundImage = Properties.Resources.finish_line;
+            videoPictureBox.BackgroundImage = Properties.Resources.unlocking;
         }
         #endregion
 
@@ -156,7 +167,6 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             );
 
             _videoFeed.OpenCamera();
-            _currentProcedure = PredictProcedure;
         }
         #endregion
 
@@ -184,7 +194,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 
                 if (_faceRecognizer.GetModelPerformance() > 90)
                 {
-                    DisplayLoginSuccess();
+                    DisplayTraining(2); //Display training success
                     _currentProcedure = IdleProcedure;
                 }
                 else
@@ -207,7 +217,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             else if (_verificationCount>=100)
             {
                 StopVideoFeed();
-                DisplayTraining(2); //Display training
+                DisplayLoginSuccess();
                 _currentProcedure = IdleProcedure;
             }
             else
