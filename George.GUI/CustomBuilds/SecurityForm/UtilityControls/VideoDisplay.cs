@@ -33,21 +33,27 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             _verificationCount = 0;
             _shouldDisplayFeed = true;
             _currentProcedure = IdleProcedure;
-            
+
             InitializeComponent();
-            this.Load += VideoDisplay_Load; 
+            this.Load += VideoDisplay_Load;
         }
 
         #region Setter Methods
         public void SetProgressText(string text)
         {
-            progressBar.Invoke((MethodInvoker)(() => {
+            progressLabel.Text = text;
+        }
+        public void SetProgressTextAsync(string text)
+        {
+            progressBar.Invoke((MethodInvoker)(() =>
+            {
                 progressLabel.Text = text;
             }));
         }
         public void SetProgressValue(int value)
         {
-            progressBar.Invoke((MethodInvoker)(() => {
+            progressBar.Invoke((MethodInvoker)(() =>
+            {
                 progressBar.Value = value;
                 progressBar.Text = $"{value}%";
             }));
@@ -67,6 +73,72 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
                 _currentProcedure = IdleProcedure;
             }
         }
+
+        public Boolean GetIsTrained()
+        {
+            return _faceRecognizer.IsTrained;
+        }
+        #endregion
+
+        #region Procedure Methods
+        private void IdleProcedure(Image<Gray, byte>? faceImage)
+        {
+
+        }
+        private void TrainingProcedure(Image<Gray, byte>? faceImage)
+        {
+            int count = (int)(_faceRecognizer.GetModelDataCount() * 0.5);
+
+            if (count < 100)
+            {
+                _faceRecognizer.AppendToModelData(faceImage);
+                SetProgressValue(count);
+            }
+            else
+            {
+                StopVideoFeed();
+                DisplayTraining(1); //Display training
+
+                _faceRecognizer.PrepareModelData();
+                _faceRecognizer.TrainModel();  //Start training  
+
+                if (_faceRecognizer.GetModelPerformance() > 90)
+                {
+                    DisplayTraining(2); //Display training success
+                    _currentProcedure = IdleProcedure;
+                }
+                else
+                {
+                    DisplayTraining(3); //Display restart training
+                    _faceRecognizer.IsTrained = false;
+                    _faceRecognizer.ResetModel();
+                    ResumeVideoFeed();
+                }
+            }
+        }
+        private void PredictProcedure(Image<Gray, byte>? faceImage)
+        {
+            bool prediction = _faceRecognizer.Predict(faceImage);
+
+            if (prediction && _verificationCount < 100)
+            {
+                _imageProcessor.ChangeBorderColor(1);
+                _verificationCount += 10;
+            }
+            else if (_verificationCount >= 100)
+            {
+                StopVideoFeed();
+                DisplayLoginSuccess();
+                _currentProcedure = IdleProcedure;
+            }
+            else
+            {
+                _imageProcessor.ChangeBorderColor(2);
+            }
+
+            SetProgressValue(_verificationCount);
+        }
+
         #endregion
 
         #region Display Methods
@@ -82,15 +154,16 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
                 if (_shouldDisplayFeed)
                 {
                     videoPictureBox.BackgroundImage = _imageProcessor.ConvertBgrImageToBitMap(feed);
-                }   
+                }
             }
         }
         private void DisplayTraining(int step)
         {
             if (step == 1)
             {
-                SetProgressText("Training in progress...");
-                progressBar.Invoke((MethodInvoker)(() => {
+                SetProgressTextAsync("Training in progress...");
+                progressBar.Invoke((MethodInvoker)(() =>
+                {
                     progressBar.Hide();
                 }));
 
@@ -99,14 +172,15 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             else if (step == 2)
             {
                 _shouldDisplayFeed = false;
-                SetProgressText("Training is complete!");
+                SetProgressTextAsync("Training is complete!");
                 videoPictureBox.BackgroundImage = Properties.Resources.finish_line;
             }
-            else if(step == 3)
+            else if (step == 3)
             {
                 SetProgressValue(0);
-                SetProgressText("Training failed, retry...");
-                progressBar.Invoke((MethodInvoker)(() => {
+                SetProgressTextAsync("Training failed, retry...");
+                progressBar.Invoke((MethodInvoker)(() =>
+                {
                     progressBar.Show();
                 }));
             }
@@ -118,13 +192,23 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         }
         private void DisplayLoginSuccess()
         {
-
-            SetProgressText("Login Success!");
-            progressBar.Invoke((MethodInvoker)(() => {
+            _shouldDisplayFeed = false;
+            SetProgressTextAsync("Login Success!");
+            progressBar.Invoke((MethodInvoker)(() =>
+            {
                 progressBar.Hide();
             }));
 
             videoPictureBox.BackgroundImage = Properties.Resources.unlocking;
+        }
+        public void ClearFeedDisplay()
+        {
+            _shouldDisplayFeed = true;
+            _verificationCount = 0;
+            _faceRecognizer.ResetModel();
+            _imageProcessor.ChangeBorderColor(1);
+            progressBar.Show();
+            DisplayDefualtBg();
         }
         #endregion
 
@@ -145,7 +229,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             if (!videoBgWorker.CancellationPending)
             {
                 DisplayFeed();
-            }            
+            }
         }
         private void videoBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -168,66 +252,6 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 
             _videoFeed.OpenCamera();
         }
-        #endregion
-
-        #region Procedure Methods
-        private void IdleProcedure(Image<Gray, byte>? faceImage)
-        {
-
-        }
-        private void TrainingProcedure(Image<Gray, byte>? faceImage)
-        {
-            int count = (int)(_faceRecognizer.GetModelDataCount() * 0.5);
-
-            if (count < 100)
-            {
-                _faceRecognizer.AppendToModelData(faceImage);
-                SetProgressValue(count);
-            }
-            else if(!_faceRecognizer.IsTrained)
-            {
-                StopVideoFeed();
-                DisplayTraining(1); //Display training
-
-                _faceRecognizer.PrepareModelData();
-                _faceRecognizer.TrainModel();  //Start training  
-
-                if (_faceRecognizer.GetModelPerformance() > 90)
-                {
-                    DisplayTraining(2); //Display training success
-                    _currentProcedure = IdleProcedure;
-                }
-                else
-                {
-                    DisplayTraining(3); //Display restart training
-                    _faceRecognizer.ResetModel();
-                    ResumeVideoFeed();
-                }
-            }
-        }
-        private void PredictProcedure(Image<Gray, byte>? faceImage)
-        {
-            bool prediction = _faceRecognizer.Predict(faceImage);
-
-            if (prediction && _verificationCount <100)
-            {
-                _imageProcessor.ChangeBorderColor(1);
-                _verificationCount += 10;
-            }
-            else if (_verificationCount>=100)
-            {
-                StopVideoFeed();
-                DisplayLoginSuccess();
-                _currentProcedure = IdleProcedure;
-            }
-            else
-            {
-                _imageProcessor.ChangeBorderColor(2);
-            }
-
-            SetProgressValue(_verificationCount);
-        }
-
         #endregion
 
     }

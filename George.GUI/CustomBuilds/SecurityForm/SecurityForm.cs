@@ -27,26 +27,31 @@ namespace George.GUI.CustomBuilds.SecurityForm
             _securityInput.SetNextAction(DisplaySignUpVideoDisplay);
 
             InitializeComponent();
-            DisplayLoginForm();
+            InitializeSecurityForm();
         }
 
-        #region Event Handlers Methods
-        private void exitButton_Click(object sender, EventArgs e)
+        #region Final Display Methods
+        public void DisplayLoginForm()
         {
-            this.Close();
+            DisplayLoginBanner();
+            DisplayLoginVideoDisplay();
         }
-        private void utilityButton_Click(object sender, EventArgs e)
+        public void DisplaySignUpForm()
         {
-            if (_isLogin)
-            {
-                DisplaySignUpBanner();
-                DisplaySecurityInput();
-            }
-            else
+            DisplaySignUpBanner();
+            DisplaySecurityInput();
+        }
+        public void InitializeSecurityForm()
+        {
+            if (_videoDisplay.GetIsTrained())
             {
                 DisplayLoginForm();
             }
-            Console.WriteLine("Move");
+            else
+            {
+                this.utilityButton.Enabled = false;
+                DisplaySignUpForm();
+            }
         }
         #endregion
 
@@ -57,8 +62,8 @@ namespace George.GUI.CustomBuilds.SecurityForm
             this.utilityButton.Text = "Login->";
             this.pictureBox.Image = global::George.GUI.Properties.Resources.signUp;
             this.bannerPanel.BackColor = Color.FromArgb(
-                ((int)(((byte)(19)))), 
-                ((int)(((byte)(25)))), 
+                ((int)(((byte)(19)))),
+                ((int)(((byte)(25)))),
                 ((int)(((byte)(40))))
             );
         }
@@ -67,32 +72,11 @@ namespace George.GUI.CustomBuilds.SecurityForm
             _isLogin = true;
             this.utilityButton.Text = "SignUp->";
             this.pictureBox.Image = global::George.GUI.Properties.Resources.ai;
-        }
-        #endregion
-
-        #region Utility Display Methods
-        private void DisplaySecurityInput()
-        {
-            StopVideoDisplay();
-            _securityInput.Dock = DockStyle.None;
-            _securityInput.Location = new Point(0, 100);
-            _securityInput.Size = new Size(420, 350);
-            _securityInput.TabIndex = 2;
-            _securityInput.Show();
-
-            this.Controls.Add(this._securityInput);
-        }
-        private void DisplaySignUpVideoDisplay()
-        {
-            //_videoDisplay.SetProgressText("Scanning:");
-            _videoDisplay.SetVideoProcedureStep(1);
-            DisplayVideoFeed();
-        }
-        private void DisplayLoginVideoDisplay()
-        {
-            //_videoDisplay.SetProgressText("Verification:");
-            _videoDisplay.SetVideoProcedureStep(2);
-            DisplayVideoFeed();
+            this.bannerPanel.BackColor = Color.FromArgb(
+                ((int)(((byte)(29)))),
+                ((int)(((byte)(98)))),
+                ((int)(((byte)(155))))
+            );
         }
         #endregion
 
@@ -100,6 +84,7 @@ namespace George.GUI.CustomBuilds.SecurityForm
         private void DisplayVideoFeed()
         {
             _securityInput.Hide();
+            _videoDisplay.ClearFeedDisplay();
             _videoDisplay.ResumeVideoFeed();
 
             _videoDisplay.Dock = DockStyle.Bottom;
@@ -118,15 +103,50 @@ namespace George.GUI.CustomBuilds.SecurityForm
         }
         #endregion
 
-        public void DisplayLoginForm()
+        #region Utility Display Methods
+        private void DisplaySecurityInput()
         {
-            DisplayLoginBanner();
-            DisplayLoginVideoDisplay();
+            StopVideoDisplay();
+            _securityInput.Dock = DockStyle.None;
+            _securityInput.Location = new Point(0, 100);
+            _securityInput.Size = new Size(420, 350);
+            _securityInput.TabIndex = 2;
+            _securityInput.Show();
+
+            this.Controls.Add(this._securityInput);
         }
-        public void DisplaySignUpForm()
+        private void DisplaySignUpVideoDisplay()
         {
-            DisplaySignUpBanner();
-            DisplaySignUpVideoDisplay();
+            _videoDisplay.SetProgressText("Face Scanning:");
+            _videoDisplay.SetVideoProcedureStep(1);
+            DisplayVideoFeed();
         }
+        private void DisplayLoginVideoDisplay()
+        {
+            _videoDisplay.SetProgressText("Login Verification:");
+            _videoDisplay.SetVideoProcedureStep(2);
+            DisplayVideoFeed();
+        }
+        #endregion
+
+        #region Event Handlers Methods
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        private void utilityButton_Click(object sender, EventArgs e)
+        {
+            if (_isLogin)
+            {
+                DisplaySignUpForm();
+            }
+            else
+            {
+                DisplayLoginForm();
+            }
+        }
+        #endregion
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
     public partial class SecurityInput : UserControl
     {
         #region Instances
+        private Object _emailClient;
         private string _emailAddress;
         private string _password;
         private Action _nextAction;
@@ -28,21 +30,24 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         {
             _nextAction = action;
         }
-        public string GetEmailAddress()
+        private void ExtractCredentials()
         {
             _emailAddress = emailTextBox.Text;
-            return _emailAddress;
-        }
-        public string GetPassword()
-        {
             _password = pwTextBox.Text;
-            return _password;
+        }
+        #endregion
+
+        #region Registration Methods
+        private void IsEmailValid()
+        {
+            ExtractCredentials();
         }
         #endregion
 
         #region Event Handlers
         private void nextbutton_Click(object sender, EventArgs e)
         {
+
             _nextAction();
         }
         #endregion

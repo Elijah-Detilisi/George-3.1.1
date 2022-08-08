@@ -55,29 +55,25 @@ namespace George.GUI.CustomUtilities.Video
             catch (Exception ex)
             {
                 Debug.WriteLine("[INFO]: Error in FaceRecognizer.LoadExistingModel(): " + ex.Message);
-                throw ex;
-                
             }
         }
         public void ResetModel()
         {
-            _isTrained = false;
             _trainingLabel = new List<int>();
             _trainingData = new List<Mat>();
             _testData = new List<Image<Gray, Byte>>();
             _modelData = new List<Image<Gray, Byte>>();
-
-            _recognizer = new EigenFaceRecognizer();
         }
         #endregion
 
         #region Setter and Getter Methods
-        public  int GetModelDataCount()
+        public int GetModelDataCount()
         {
             return _modelData.Count;
         }
         public bool IsTrained
         {
+            set { _isTrained = value; }
             get { return _isTrained; }
         }
         public void AppendToModelData(Image<Gray, Byte>? imageData)
@@ -92,7 +88,7 @@ namespace George.GUI.CustomUtilities.Video
         public void PrepareModelData()
         {
             int sampleSize = GetModelDataCount();
-            
+
             if (sampleSize >= 190)
             {
                 int faceId = 1;
@@ -100,7 +96,7 @@ namespace George.GUI.CustomUtilities.Video
 
                 foreach (Image<Gray, Byte> faceData in _modelData)
                 {
-                    if (_trainingData.Count< upperQuartile)
+                    if (_trainingData.Count < upperQuartile)
                     {
                         _trainingData.Add(faceData.Mat);
                         _trainingLabel.Add(faceId);
