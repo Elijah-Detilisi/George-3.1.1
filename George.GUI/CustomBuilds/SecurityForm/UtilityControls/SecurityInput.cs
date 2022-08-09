@@ -11,17 +11,20 @@ using System.Windows.Forms;
 
 namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 {
+    using George.Email.Stream;
+
     public partial class SecurityInput : UserControl
     {
         #region Instances
-        private Object _emailClient;
         private string _emailAddress;
         private string _password;
         private Action _nextAction;
+        private readonly Inbox _emailClient;
         #endregion
 
         public SecurityInput()
         {
+            _emailClient = new Inbox();
             InitializeComponent();
         }
 
@@ -38,17 +41,37 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         #endregion
 
         #region Registration Methods
-        private void IsEmailValid()
+        private Boolean IsEmailValid()
         {
-            ExtractCredentials();
+            var result = true;
+            try
+            {
+                ExtractCredentials();
+                _emailClient.LoginToEmail(_emailAddress, _password);
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+
+            return result;
         }
         #endregion
 
         #region Event Handlers
         private void nextbutton_Click(object sender, EventArgs e)
         {
-
-            _nextAction();
+            if (IsEmailValid())
+            {
+                //store credentials into database
+                Errorlabel.Hide();
+                _nextAction();
+            }
+            else
+            {
+                Errorlabel.Show();
+                //repeat ask email prompt
+            }
         }
         #endregion
     }

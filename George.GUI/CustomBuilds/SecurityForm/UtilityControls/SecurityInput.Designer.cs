@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.inputPanel = new System.Windows.Forms.Panel();
+            this.Errorlabel = new System.Windows.Forms.Label();
             this.nextbutton = new System.Windows.Forms.Button();
             this.pwPictureBox = new System.Windows.Forms.PictureBox();
             this.dividerLabel2 = new System.Windows.Forms.Label();
@@ -47,6 +48,7 @@
             // 
             this.inputPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputPanel.Controls.Add(this.Errorlabel);
             this.inputPanel.Controls.Add(this.nextbutton);
             this.inputPanel.Controls.Add(this.pwPictureBox);
             this.inputPanel.Controls.Add(this.dividerLabel2);
@@ -58,8 +60,22 @@
             this.inputPanel.Controls.Add(this.emailTextBox);
             this.inputPanel.Location = new System.Drawing.Point(42, 17);
             this.inputPanel.Name = "inputPanel";
-            this.inputPanel.Size = new System.Drawing.Size(334, 302);
+            this.inputPanel.Size = new System.Drawing.Size(334, 319);
             this.inputPanel.TabIndex = 0;
+            // 
+            // Errorlabel
+            // 
+            this.Errorlabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Errorlabel.AutoSize = true;
+            this.Errorlabel.Font = new System.Drawing.Font("Arial Rounded MT Bold", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Errorlabel.ForeColor = System.Drawing.Color.Maroon;
+            this.Errorlabel.Location = new System.Drawing.Point(43, 206);
+            this.Errorlabel.Name = "Errorlabel";
+            this.Errorlabel.Size = new System.Drawing.Size(236, 22);
+            this.Errorlabel.TabIndex = 20;
+            this.Errorlabel.Text = "Invalid Email Credintials!";
+            this.Errorlabel.Visible = false;
             // 
             // nextbutton
             // 
@@ -70,7 +86,7 @@
             this.nextbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.nextbutton.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.nextbutton.ForeColor = System.Drawing.Color.Silver;
-            this.nextbutton.Location = new System.Drawing.Point(44, 225);
+            this.nextbutton.Location = new System.Drawing.Point(44, 250);
             this.nextbutton.Name = "nextbutton";
             this.nextbutton.Size = new System.Drawing.Size(266, 47);
             this.nextbutton.TabIndex = 19;
@@ -83,7 +99,7 @@
             this.pwPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pwPictureBox.Image = global::George.GUI.Properties.Resources._lock;
-            this.pwPictureBox.Location = new System.Drawing.Point(44, 117);
+            this.pwPictureBox.Location = new System.Drawing.Point(44, 99);
             this.pwPictureBox.Name = "pwPictureBox";
             this.pwPictureBox.Size = new System.Drawing.Size(43, 37);
             this.pwPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -97,7 +113,7 @@
             this.dividerLabel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
             this.dividerLabel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dividerLabel2.ForeColor = System.Drawing.Color.LightGray;
-            this.dividerLabel2.Location = new System.Drawing.Point(44, 193);
+            this.dividerLabel2.Location = new System.Drawing.Point(44, 168);
             this.dividerLabel2.Name = "dividerLabel2";
             this.dividerLabel2.Size = new System.Drawing.Size(266, 2);
             this.dividerLabel2.TabIndex = 17;
@@ -109,7 +125,7 @@
             this.pwLabel.AutoSize = true;
             this.pwLabel.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.pwLabel.ForeColor = System.Drawing.Color.Silver;
-            this.pwLabel.Location = new System.Drawing.Point(89, 124);
+            this.pwLabel.Location = new System.Drawing.Point(89, 106);
             this.pwLabel.Name = "pwLabel";
             this.pwLabel.Size = new System.Drawing.Size(110, 24);
             this.pwLabel.TabIndex = 16;
@@ -123,7 +139,7 @@
             this.pwTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.pwTextBox.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point);
             this.pwTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(188)))), ((int)(((byte)(192)))), ((int)(((byte)(204)))));
-            this.pwTextBox.Location = new System.Drawing.Point(44, 167);
+            this.pwTextBox.Location = new System.Drawing.Point(44, 147);
             this.pwTextBox.Name = "pwTextBox";
             this.pwTextBox.PasswordChar = '*';
             this.pwTextBox.Size = new System.Drawing.Size(266, 18);
@@ -149,7 +165,7 @@
             this.dividerLabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
             this.dividerLabel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dividerLabel1.ForeColor = System.Drawing.Color.LightGray;
-            this.dividerLabel1.Location = new System.Drawing.Point(44, 89);
+            this.dividerLabel1.Location = new System.Drawing.Point(44, 83);
             this.dividerLabel1.Name = "dividerLabel1";
             this.dividerLabel1.Size = new System.Drawing.Size(266, 2);
             this.dividerLabel1.TabIndex = 13;
@@ -175,7 +191,7 @@
             this.emailTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.emailTextBox.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point);
             this.emailTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(188)))), ((int)(((byte)(192)))), ((int)(((byte)(204)))));
-            this.emailTextBox.Location = new System.Drawing.Point(44, 63);
+            this.emailTextBox.Location = new System.Drawing.Point(44, 58);
             this.emailTextBox.Name = "emailTextBox";
             this.emailTextBox.Size = new System.Drawing.Size(266, 18);
             this.emailTextBox.TabIndex = 11;
@@ -209,5 +225,6 @@
         private Label dividerLabel1;
         private Label emailAddressLabel;
         private TextBox emailTextBox;
+        private Label Errorlabel;
     }
 }
