@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Extensions\GeorgeUserDB.db" />
+    <None Remove="Resources\Extensions\haarcascade_frontalface_alt.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Extensions\GeorgeUserDB.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CircularProgressBar_NET5" Version="3.0.0" />
     <PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
     <PackageReference Include="Emgu.CV.Bitmap" Version="4.5.5.4823" />

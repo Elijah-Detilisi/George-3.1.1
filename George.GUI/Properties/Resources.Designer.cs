@@ -123,9 +123,9 @@ namespace George.GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap finish_line {
+        internal static System.Drawing.Bitmap machine_learning {
             get {
-                object obj = ResourceManager.GetObject("finish-line", resourceCulture);
+                object obj = ResourceManager.GetObject("machine-learning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace George.GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap machine_learning {
+        internal static System.Drawing.Bitmap robot_study {
             get {
-                object obj = ResourceManager.GetObject("machine-learning", resourceCulture);
+                object obj = ResourceManager.GetObject("robot_study", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

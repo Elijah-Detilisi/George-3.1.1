@@ -173,7 +173,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
             {
                 _shouldDisplayFeed = false;
                 SetProgressTextAsync("Training is complete!");
-                videoPictureBox.BackgroundImage = Properties.Resources.finish_line;
+                videoPictureBox.BackgroundImage = Properties.Resources.robot_study;
             }
             else if (step == 3)
             {
