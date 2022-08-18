@@ -45,9 +45,16 @@ namespace George.Email.Stream
         }
         public void LoginToEmail(string emailAddress, string passWord)
         {
-            int port = 587;
-            string host = "smtp.gmail.com";
-            SetSmtpClient(host, port, emailAddress, passWord);
+            try
+            {
+                int port = 587;
+                string host = "smtp.gmail.com";
+                SetSmtpClient(host, port, emailAddress, passWord);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }   
         }
         #endregion
 

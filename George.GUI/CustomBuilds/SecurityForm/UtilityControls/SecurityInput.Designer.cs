@@ -68,11 +68,12 @@
             this.Errorlabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Errorlabel.AutoSize = true;
-            this.Errorlabel.Font = new System.Drawing.Font("Arial Rounded MT Bold", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Errorlabel.ForeColor = System.Drawing.Color.Maroon;
+            this.Errorlabel.BackColor = System.Drawing.Color.Maroon;
+            this.Errorlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Errorlabel.ForeColor = System.Drawing.Color.Silver;
             this.Errorlabel.Location = new System.Drawing.Point(43, 206);
             this.Errorlabel.Name = "Errorlabel";
-            this.Errorlabel.Size = new System.Drawing.Size(236, 22);
+            this.Errorlabel.Size = new System.Drawing.Size(212, 24);
             this.Errorlabel.TabIndex = 20;
             this.Errorlabel.Text = "Invalid Email Credintials!";
             this.Errorlabel.Visible = false;
@@ -123,11 +124,11 @@
             this.pwLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pwLabel.AutoSize = true;
-            this.pwLabel.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.pwLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.pwLabel.ForeColor = System.Drawing.Color.Silver;
             this.pwLabel.Location = new System.Drawing.Point(89, 106);
             this.pwLabel.Name = "pwLabel";
-            this.pwLabel.Size = new System.Drawing.Size(110, 24);
+            this.pwLabel.Size = new System.Drawing.Size(106, 25);
             this.pwLabel.TabIndex = 16;
             this.pwLabel.Text = "Password";
             // 
@@ -175,11 +176,11 @@
             this.emailAddressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.emailAddressLabel.AutoSize = true;
-            this.emailAddressLabel.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.emailAddressLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.emailAddressLabel.ForeColor = System.Drawing.Color.Silver;
             this.emailAddressLabel.Location = new System.Drawing.Point(89, 20);
             this.emailAddressLabel.Name = "emailAddressLabel";
-            this.emailAddressLabel.Size = new System.Drawing.Size(156, 24);
+            this.emailAddressLabel.Size = new System.Drawing.Size(150, 25);
             this.emailAddressLabel.TabIndex = 12;
             this.emailAddressLabel.Text = "Email Address";
             // 

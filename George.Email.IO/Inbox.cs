@@ -28,12 +28,19 @@ namespace George.Email.Stream
         #region Authentication Methods
         public void LoginToEmail(string emailAddress, string passWord)
         {
-            string hostName = "pop.gmail.com";
-            int portNumber = 995;
-
-            _imapClient.Connect(hostName, portNumber, true);
-            _imapClient.Authenticate(emailAddress, passWord);
-            _totalMessageCount = _imapClient.GetMessageCount();
+            try
+            {
+                string hostName = "pop.gmail.com";
+                int portNumber = 995;
+                _imapClient.Connect(hostName, portNumber, true);
+                _imapClient.Authenticate(emailAddress, passWord);
+                _totalMessageCount = _imapClient.GetMessageCount();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
         }
         #endregion
 

@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+    <ProjectReference Include="..\George.Audio.IO\George.Audio.Stream.csproj" />
+    <ProjectReference Include="..\George.Data\George.Data.Layer.csproj" />
+    <ProjectReference Include="..\George.Email.IO\George.Email.Stream.csproj" />
   </ItemGroup>
 
 </Project>
