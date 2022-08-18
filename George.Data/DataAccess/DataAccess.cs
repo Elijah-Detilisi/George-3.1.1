@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace George.Data.Layer.Access
+namespace George.Data.Layer.DataAccess
 {
+    using Dapper;
     using System.Data;
     using System.Data.SQLite;
-    using Dapper;
-    using George.Data.Layer.Model;
+    using George.Data.Layer.DataModel;
 
     public class DataAccess
     {

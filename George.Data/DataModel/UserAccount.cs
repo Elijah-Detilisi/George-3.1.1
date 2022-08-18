@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace George.Data.Layer.Model
+namespace George.Data.Layer.DataModel
 {
     public class UserAccount
     {
