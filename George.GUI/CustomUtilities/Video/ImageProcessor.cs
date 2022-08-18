@@ -24,7 +24,7 @@ namespace George.GUI.CustomUtilities.Video
             _detectedFaces = new Rectangle[3];
             _borderColor = new Bgr(Color.SteelBlue);
             _faceCascade = new CascadeClassifier(
-                Directory.GetCurrentDirectory() + @"\Resources\XML Files\haarcascade_frontalface_alt.xml"
+                Directory.GetCurrentDirectory() + @"\Resources\Extensions\haarcascade_frontalface_default.xml"
             );
         }
 
