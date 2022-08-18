@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
 {
+    using George.Data.Layer.DataAccess;
     using George.Email.Stream;
 
     public partial class SecurityInput : UserControl
@@ -20,6 +21,7 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         private string _password;
         private Action _nextAction;
         private readonly Inbox _emailClient;
+        private readonly DataAccess _dataAccess;
         #endregion
 
         public SecurityInput()
