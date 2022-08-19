@@ -8,21 +8,30 @@ namespace George.Data.Layer.DataBase
 {
     public static class Presets
     {
-        public static string RestoreEmailServer()
+        public static string RestoreEmailDomainTable()
+        {
+            string query = @"
+                INSERT INTO EmailDomain 
+                    (DomainName) 
+                VALUES 
+                    ('Gmail'), 
+                    ('Yahoo'), 
+                    ('Hotmail'), 
+                    ('Outlook'), 
+                    ('Office365')
+            ";
+
+            return query;
+        }
+
+        public static string RestoreSmtpServerTable()
         {
             string query = "";
 
             return query;
         }
 
-        public static string RestoreSmtpServer()
-        {
-            string query = "";
-
-            return query;
-        }
-
-        public static string RestorePop3Server()
+        public static string RestorePop3ServerTable()
         {
             string query = "";
 

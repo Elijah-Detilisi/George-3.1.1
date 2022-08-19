@@ -23,10 +23,10 @@ namespace George.Data.Layer.DataBase
             return query;
         }
 
-        public static string EmailServer()
+        public static string EmailDomain()
         {
             string query = @"
-                CREATE TABLE ""EmailServer"" (
+                CREATE TABLE ""EmailDomain"" (
 	                ""Id""	INTEGER NOT NULL,
 	                ""DomainName""	TEXT NOT NULL,
 	                PRIMARY KEY(""Id"")
