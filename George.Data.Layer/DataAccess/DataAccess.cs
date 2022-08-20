@@ -10,6 +10,7 @@ namespace George.Data.Layer.DataAccess
     using System.Data;
     using System.Data.SQLite;
     using George.Data.Layer.DataModel;
+    using George.Data.Layer.DataBase;
 
     public class DataAccess
     {
@@ -33,7 +34,7 @@ namespace George.Data.Layer.DataAccess
                     data.Add(emailPassword);
                     data.Add(emailAddress);
 
-                    _ = await db.ExecuteAsync("", data);
+                    await db.ExecuteAsync("", data);
                 }
             }
             catch (Exception ex)
@@ -63,6 +64,56 @@ namespace George.Data.Layer.DataAccess
         }
         #endregion
 
+        #region Initialization Methods
+        private void CreateTables()
+        {
+            try
+            {
+                using (IDbConnection db = _connectionManager.DefaultConnection())
+                {
+                    db.Execute(Tables.UserAccounts());
+                    db.Execute(Tables.EmailDomain());
+                    db.Execute(Tables.StmpServer());
+                    db.Execute(Tables.Pop3Server());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[INFO]: Error while executing RestoreTableDefaultValues; {ex.Message}");
+            }
+        }
+
+        private void RestoreTableDefaultValues()
+        {
+            try
+            {
+                using (IDbConnection db = _connectionManager.DefaultConnection())
+                {
+                    db.Execute(Presets.RestoreEmailDomainTable());
+                    db.Execute(Presets.RestoreSmtpServerTable());
+                    db.Execute(Presets.RestorePop3ServerTable());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[INFO]: Error while executing RestoreTableDefaultValues; {ex.Message}");
+            }
+        }
+
+        public void RestoreDataBase()
+        {
+            if (!File.Exists("database.sqlite3")) // pass file path
+            {
+                Console.WriteLine("Initializing table");
+                SQLiteConnection.CreateFile("database.sqlite3");
+                CreateTables();
+                RestoreTableDefaultValues();
+                
+            }
+            
+        }
+        #endregion
+
         #region Support Entities
         private interface IConnectionManager
         {
@@ -74,7 +125,7 @@ namespace George.Data.Layer.DataAccess
             private readonly string connectionString;
             public ConnectionManager()
             {
-                connectionString = "data source=.;initial catalog=George;Integrated Security=True;MultipleActiveResultSets=True;";
+                connectionString = "data source= database.sqlite3";
             }
             public IDbConnection DefaultConnection()
             {

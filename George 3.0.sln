@@ -5,13 +5,13 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "George.Audio.Stream", "George.Audio.IO\George.Audio.Stream.csproj", "{8FCB4CF3-79FF-478C-AE4E-4C7DE3EDBFED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "George.Data.Layer", "George.Data\George.Data.Layer.csproj", "{EBF4F13F-0FBA-45EE-BC6A-00533CE3BCD1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "George.Email.Stream", "George.Email.IO\George.Email.Stream.csproj", "{969D7859-5D5B-4A7E-BF30-767A335555E8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "George.GUI", "George.GUI\George.GUI.csproj", "{B056F971-2CE9-4A5C-A222-3894A69B0D3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "George.Services.Layer", "George.Services.Layer\George.Services.Layer.csproj", "{1884CE06-6B95-4429-B0E5-174E7276F101}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "George.Services.Layer", "George.Services.Layer\George.Services.Layer.csproj", "{1884CE06-6B95-4429-B0E5-174E7276F101}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "George.Data.Layer", "George.Data.Layer\George.Data.Layer.csproj", "{C069F193-052E-4FB2-A517-CADE7F3AD26A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{8FCB4CF3-79FF-478C-AE4E-4C7DE3EDBFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FCB4CF3-79FF-478C-AE4E-4C7DE3EDBFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FCB4CF3-79FF-478C-AE4E-4C7DE3EDBFED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EBF4F13F-0FBA-45EE-BC6A-00533CE3BCD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBF4F13F-0FBA-45EE-BC6A-00533CE3BCD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBF4F13F-0FBA-45EE-BC6A-00533CE3BCD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBF4F13F-0FBA-45EE-BC6A-00533CE3BCD1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{969D7859-5D5B-4A7E-BF30-767A335555E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{969D7859-5D5B-4A7E-BF30-767A335555E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{969D7859-5D5B-4A7E-BF30-767A335555E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{1884CE06-6B95-4429-B0E5-174E7276F101}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1884CE06-6B95-4429-B0E5-174E7276F101}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1884CE06-6B95-4429-B0E5-174E7276F101}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C069F193-052E-4FB2-A517-CADE7F3AD26A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C069F193-052E-4FB2-A517-CADE7F3AD26A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C069F193-052E-4FB2-A517-CADE7F3AD26A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C069F193-052E-4FB2-A517-CADE7F3AD26A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
