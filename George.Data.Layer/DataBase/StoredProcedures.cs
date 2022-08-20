@@ -16,7 +16,7 @@ namespace George.Data.Layer.DataBase
 				DECLARE	@serverId INT
 				DECLARE	@domainName TEXT
 	
-				--Determine ServerId
+				--Determine ServerId 
 				SET @domainName = SUBSTRING(
 									@emailAddress, CHARINDEX('@', 
 									@emailAddress)+1, LEN(@emailAddress)
