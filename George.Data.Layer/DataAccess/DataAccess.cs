@@ -30,11 +30,13 @@ namespace George.Data.Layer.DataAccess
             {
                 using (IDbConnection db = _connectionManager.DefaultConnection())
                 {
-                    DynamicParameters data = new DynamicParameters();
-                    data.Add(emailPassword);
-                    data.Add(emailAddress);
+                    var parameters = new Dictionary<string, object>()
+                      {
+                        ["EmailAddress"] = emailAddress,
+                        ["EmailPassword"] = emailPassword
+                    };
 
-                    await db.ExecuteAsync("", data);
+                    await db.ExecuteAsync(StoredProcedures.SaveUserAccount(), parameters);
                 }
             }
             catch (Exception ex)
@@ -52,7 +54,7 @@ namespace George.Data.Layer.DataAccess
                     DynamicParameters data = new DynamicParameters();
                     data.Add(accountId.ToString());
 
-                    var output = await db.QueryAsync<UserAccount>("", new DynamicParameters());
+                    var output = await db.QueryAsync<UserAccount>(StoredProcedures.GetUserAccount(), data);
                     return (UserAccount)output;
                 }
             }

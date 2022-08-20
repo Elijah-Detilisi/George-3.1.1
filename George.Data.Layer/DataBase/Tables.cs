@@ -11,14 +11,13 @@ namespace George.Data.Layer.DataBase
         public static string UserAccounts()
         {
             string  query = @"
-                CREATE TABLE UserAccounts (
-	                Id	INTEGER AUTOINCREMENT,
-	                EmailAddress TEXT NOT NULL UNIQUE,
-	                EmailPassword TEXT NOT NULL,
-	                FK_DomainId INTEGER NOT NULL,
-	                PRIMARY KEY(Id AUTOINCREMENT)
-                )
-            ";
+            CREATE TABLE UserAccounts (
+	            Id	INTEGER NOT NULL,
+	            EmailAddress TEXT NOT NULL UNIQUE,
+	            EmailPassword TEXT NOT NULL,
+	            FK_DomainId INTEGER NOT NULL,
+	            PRIMARY KEY(Id)
+            )";
 
             return query;
         }
@@ -26,12 +25,11 @@ namespace George.Data.Layer.DataBase
         public static string EmailDomain()
         {
             string query = @"
-                CREATE TABLE EmailDomain (
-	                Id	INTEGER NOT NULL,
-	                DomainName	TEXT NOT NULL,
-	                PRIMARY KEY(Id)
-                )
-            ";
+            CREATE TABLE EmailDomain (
+	            Id	INTEGER NOT NULL,
+	            DomainName	TEXT NOT NULL,
+	            PRIMARY KEY(Id)
+            )";
 
             return query;
         }
@@ -52,12 +50,11 @@ namespace George.Data.Layer.DataBase
         public static string Pop3Server()
         {
             string query = @"
-                CREATE TABLE Pop3Server (
-	                HostName TEXT NOT NULL,
-	                PortNumber INTEGER NOT NULL,
-	                FK_DomainId INTEGER NOT NULL
-                )
-            ";
+            CREATE TABLE Pop3Server (
+	            HostName TEXT NOT NULL,
+	            PortNumber INTEGER NOT NULL,
+	            FK_DomainId INTEGER NOT NULL
+            )";
 
             return query;
         }
