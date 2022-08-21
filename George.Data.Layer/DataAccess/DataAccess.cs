@@ -47,7 +47,7 @@ namespace George.Data.Layer.DataAccess
             }
         }
 
-        public async Task<UserAccount> GetUserAccountAsync(int accountId)
+        public async Task<IEnumerable<UserAccount>> GetUserAccountAsync(int accountId)
         {
             try
             {
@@ -59,13 +59,13 @@ namespace George.Data.Layer.DataAccess
                     };
 
                     var output = await db.QueryAsync<UserAccount>(StoredProcedures.GetUserAccount(), parameters);
-                    return (UserAccount)output;
+                    return output;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[INFO]: Error while executing GetUserAccountAsync; {ex.Message}");
-                return null;
+                throw ex;
             }
         }
         #endregion
