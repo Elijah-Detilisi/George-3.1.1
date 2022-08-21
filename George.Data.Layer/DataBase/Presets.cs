@@ -27,7 +27,7 @@ namespace George.Data.Layer.DataBase
         public static string RestoreSmtpServerTable()
         {
             string query = @"
-            INSERT INTO StmpServer 
+            INSERT INTO SmtpServer 
 	            (HostName, PortNumber, FK_DomainId) 
             VALUES 
 	            ('smtp.gmail.com', 587, 1),

@@ -8,11 +8,10 @@ namespace George.Data.Layer.DataModel
 {
     public class UserAccount
     {
-        public int AccountId { get; set; }
         public string EmailAddress { get; set; }
         public string EmailPassword { get; set; }
-        public string StmptHostName { get; set; }
-        public int StmptPortNumber { get; set; }
+        public string SmptHostName { get; set; }
+        public int SmptPortNumber { get; set; }
         public string Pop3HostName { get; set; }
         public int Pop3PortNumber { get; set; }
     }

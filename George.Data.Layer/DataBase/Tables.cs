@@ -37,7 +37,7 @@ namespace George.Data.Layer.DataBase
         public static string StmpServer()
         {
             string query = @"
-                CREATE TABLE StmpServer (
+                CREATE TABLE SmtpServer (
 	                HostName TEXT NOT NULL,
 	                PortNumber	INTEGER NOT NULL,
 	                FK_DomainId	INTEGER NOT NULL

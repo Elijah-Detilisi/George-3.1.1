@@ -11,6 +11,7 @@ namespace George.Data.Layer.DataAccess
     using System.Data.SQLite;
     using George.Data.Layer.DataModel;
     using George.Data.Layer.DataBase;
+    using System.Net.Mail;
 
     public class DataAccess
     {
@@ -21,9 +22,10 @@ namespace George.Data.Layer.DataAccess
         public DataAccess()
         {
             _connectionManager = new ConnectionManager();
+            RestoreDataBase();
         }
 
-        #region Class Methods
+        #region Data Access Methods
         public async Task SaveUserAccountAsync(string emailAddress, string emailPassword)
         {
             try
@@ -50,11 +52,13 @@ namespace George.Data.Layer.DataAccess
             try
             {
                 using (IDbConnection db = _connectionManager.DefaultConnection())
-                {
-                    DynamicParameters data = new DynamicParameters();
-                    data.Add(accountId.ToString());
+                { 
+                    var parameters = new Dictionary<string, object>()
+                    {
+                        ["accountId"] = accountId
+                    };
 
-                    var output = await db.QueryAsync<UserAccount>(StoredProcedures.GetUserAccount(), data);
+                    var output = await db.QueryAsync<UserAccount>(StoredProcedures.GetUserAccount(), parameters);
                     return (UserAccount)output;
                 }
             }
@@ -102,12 +106,16 @@ namespace George.Data.Layer.DataAccess
             }
         }
 
-        public void RestoreDataBase()
+        private void RestoreDataBase()
         {
-            if (!File.Exists("database.sqlite3")) // pass file path
+
+            var _databasePath = Directory.GetCurrentDirectory() + 
+                                @"\" + _connectionManager.GetDatabaseName();
+
+            if (!File.Exists(_connectionManager.GetDatabaseName()))
             {
                 Console.WriteLine("Initializing table");
-                SQLiteConnection.CreateFile("database.sqlite3");
+                SQLiteConnection.CreateFile(_databasePath);
                 CreateTables();
                 RestoreTableDefaultValues();
                 
@@ -120,18 +128,27 @@ namespace George.Data.Layer.DataAccess
         private interface IConnectionManager
         {
             IDbConnection DefaultConnection();
+            string GetDatabaseName();
         }
 
         private class ConnectionManager : IConnectionManager
         {
-            private readonly string connectionString;
+            private readonly string _databaseName;
+            private readonly string _connectionString;
+
             public ConnectionManager()
             {
-                connectionString = "data source= database.sqlite3";
+                _databaseName = "GeorgeDatabase.sqlite3";
+                _connectionString = "data source= " + _databaseName;
+                
             }
             public IDbConnection DefaultConnection()
             {
-                return new SQLiteConnection(connectionString);
+                return new SQLiteConnection(_connectionString);
+            }
+            public string GetDatabaseName()
+            {
+                   return _databaseName;
             }
         }
         #endregion

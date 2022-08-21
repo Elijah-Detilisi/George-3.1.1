@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace George.Data.Layer.DataBase
 {
@@ -43,17 +43,20 @@ namespace George.Data.Layer.DataBase
         {
             string query = @"
             SELECT 
-                EmailAddress, EmailPassword, 
-                SmptHostName, SmptPortNumber, 
-                Pop3HostName, Pop3PortNumber
+	            UserAccounts.EmailAddress AS EmailAddress, 
+	            UserAccounts.EmailPassword AS EmailPassword, 
+	            SmtpServer.HostName AS SmptHostName, 
+	            SmtpServer.PortNumber AS SmptPortNumber, 
+	            Pop3Server.HostName AS Pop3HostName, 
+	            Pop3Server.PortNumber AS Pop3PortNumber
             FROM
-                UserAccounts
-            INNER JOIN StmpServer
-                ON StmpServer.ServerId = UserAccounts.ServerId
+	            UserAccounts
+            INNER JOIN SmtpServer
+	            ON SmtpServer.FK_DomainId = UserAccounts.FK_DomainId
             INNER JOIN Pop3Server
-                ON Pop3Server.ServerId = UserAccounts.ServerId
+	            ON Pop3Server.FK_DomainId = UserAccounts.FK_DomainId
             WHERE
-                UserAccounts.ID = @accountId
+	            UserAccounts.Id = @accountId;
             ";
 
             return query;
