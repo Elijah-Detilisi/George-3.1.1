@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace George.Email.Stream
+namespace George.Services.Layer.EmailService
 {
     using OpenPop.Pop3;
     using OpenPop.Mime;
     using System.Diagnostics;
+    using George.Data.Layer.DataModel;
 
-    public class Inbox
+    public class EmailInbox
     {
         #region Instances
         private int _totalMessageCount;
@@ -18,7 +19,7 @@ namespace George.Email.Stream
         private List<Message> _allMessages;
         #endregion
 
-        public Inbox()
+        public EmailInbox()
         {
             _totalMessageCount = 0;
             _imapClient = new Pop3Client();
@@ -26,21 +27,19 @@ namespace George.Email.Stream
         }
 
         #region Authentication Methods
-        public void LoginToEmail(string emailAddress, string passWord)
+        public void LoginToEmail(UserAccount userAccount)
         {
             try
             {
-                string hostName = "pop.gmail.com";
-                int portNumber = 995;
-                _imapClient.Connect(hostName, portNumber, true);
-                _imapClient.Authenticate(emailAddress, passWord);
+                _imapClient.Connect(userAccount.Pop3HostName, userAccount.Pop3PortNumber, true);
+                _imapClient.Authenticate(userAccount.EmailAddress, userAccount.EmailPassword);
                 _totalMessageCount = _imapClient.GetMessageCount();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            
+
         }
         #endregion
 

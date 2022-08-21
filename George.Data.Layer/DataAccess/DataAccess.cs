@@ -11,7 +11,6 @@ namespace George.Data.Layer.DataAccess
     using System.Data.SQLite;
     using George.Data.Layer.DataModel;
     using George.Data.Layer.DataBase;
-    using System.Net.Mail;
 
     public class DataAccess
     {
@@ -47,7 +46,7 @@ namespace George.Data.Layer.DataAccess
             }
         }
 
-        public async Task<IEnumerable<UserAccount>> GetUserAccountAsync(int accountId)
+        public async Task<UserAccount> GetUserAccountAsync(int accountId)
         {
             try
             {
@@ -59,7 +58,7 @@ namespace George.Data.Layer.DataAccess
                     };
 
                     var output = await db.QueryAsync<UserAccount>(StoredProcedures.GetUserAccount(), parameters);
-                    return output;
+                    return output.ToList()[0];
                 }
             }
             catch (Exception ex)

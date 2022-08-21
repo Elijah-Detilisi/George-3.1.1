@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 namespace George.Services.Layer
 {
     using George.Email.Stream;
+    using George.Data.Layer.DataModel;
     using George.Data.Layer.DataAccess;
 
     public class AccountService
     {
         #region Instances
-        private readonly DataAccess _dataAccess;
         private readonly Inbox _emailInbox;
         private readonly OutBox _emailOutbox;
+        private readonly DataAccess _dataAccess;
         #endregion
 
         public AccountService()
@@ -24,7 +25,7 @@ namespace George.Services.Layer
             _emailOutbox = new OutBox();   
         }
 
-        #region Services
+        #region Authentication Service Methods
         public Boolean LoginToInbox(string emailAddress, string password)
         {
             var isSuccess = true;
@@ -54,10 +55,17 @@ namespace George.Services.Layer
 
             return isSuccess;
         }
+        #endregion
 
+        #region Data Ops Service Methods
         public void CreateNewAccount(string emailAddress, string password)
         {
-            //_dataAccess.SaveUserAccountAsync(emailAddress, password);
+            _ = _dataAccess.SaveUserAccountAsync(emailAddress, password);
+        }
+
+        public async Task<UserAccount> GetUserAccount(int accountId)
+        {
+            return await _dataAccess.GetUserAccountAsync(accountId);
         }
         #endregion
     }

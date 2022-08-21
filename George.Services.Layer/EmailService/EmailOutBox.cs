@@ -1,17 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
-namespace George.Email.Stream
+namespace George.Services.Layer.EmailService
 {
     using System.Net;
     using System.Net.Mail;
-    using System.Diagnostics;
     using System.ComponentModel;
+    using George.Data.Layer.DataModel;
 
-    public class OutBox
+    public class EmailOutBox
     {
         #region Instances
         private SmtpClient _smtpClient;
@@ -20,7 +20,7 @@ namespace George.Email.Stream
         private MailMessage _mailMessage;
         #endregion
 
-        public OutBox()
+        public EmailOutBox()
         {
             _smtpClient = new SmtpClient();
             _recipientEmailAddresses = new List<MailAddress>();
@@ -43,18 +43,19 @@ namespace George.Email.Stream
             _smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             _smtpClient.UseDefaultCredentials = false;
         }
-        public void LoginToEmail(string emailAddress, string passWord)
+        public void LoginToEmail(UserAccount userAccount)
         {
             try
             {
-                int port = 587;
-                string host = "smtp.gmail.com";
-                SetSmtpClient(host, port, emailAddress, passWord);
+                SetSmtpClient(
+                    userAccount.SmtpHostName, userAccount.SmtpPortNumber, 
+                    userAccount.EmailAddress, userAccount.EmailPassword
+                );
             }
             catch (Exception ex)
             {
                 throw ex;
-            }   
+            }
         }
         #endregion
 

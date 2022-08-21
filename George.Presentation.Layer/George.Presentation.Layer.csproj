@@ -29,8 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\George.Data\George.Data.Layer.csproj" />
-    <ProjectReference Include="..\George.Email.IO\George.Email.Stream.csproj" />
+    <ProjectReference Include="..\George.Services.Layer\George.Services.Layer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

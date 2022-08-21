@@ -10,23 +10,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
-{
-    using George.Data.Layer.DataAccess;
-    using George.Email.Stream;
+{    
+    using George.Services.Layer;
 
     public partial class SecurityInput : UserControl
     {
         #region Instances
-        private string _emailAddress;
-        private string _password;
         private Action _nextAction;
-        private readonly Inbox _emailClient;
-        private readonly DataAccess _dataAccess;
+        private string _password;
+        private string _emailAddress;
+        private readonly AccountService _accountService;
         #endregion
 
         public SecurityInput()
         {
-            _emailClient = new Inbox();
+            _accountService = new AccountService();
             InitializeComponent();
         }
 
@@ -42,30 +40,14 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         }
         #endregion
 
-        #region Registration Methods
-        private Boolean IsEmailValid()
-        {
-            var result = true;
-            try
-            {
-                ExtractCredentials();
-                _emailClient.LoginToEmail(_emailAddress, _password);
-            }
-            catch (Exception)
-            {
-                result = false;
-            }
-
-            return result;
-        }
-        #endregion
-
         #region Event Handlers
         private void nextbutton_Click(object sender, EventArgs e)
         {
-            if (IsEmailValid())
+            ExtractCredentials();
+            
+            if (_accountService.LoginToInbox(_emailAddress, _password)) //login success
             {
-                //store credentials into database
+                _accountService.CreateNewAccount(_emailAddress, _password);
                 Errorlabel.Hide();
                 _nextAction();
             }

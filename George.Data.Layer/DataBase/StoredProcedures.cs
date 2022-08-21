@@ -45,8 +45,8 @@ namespace George.Data.Layer.DataBase
             SELECT 
 	            UserAccounts.EmailAddress AS EmailAddress, 
 	            UserAccounts.EmailPassword AS EmailPassword, 
-	            SmtpServer.HostName AS SmptHostName, 
-	            SmtpServer.PortNumber AS SmptPortNumber, 
+	            SmtpServer.HostName AS SmtpHostName, 
+	            SmtpServer.PortNumber AS SmtpPortNumber, 
 	            Pop3Server.HostName AS Pop3HostName, 
 	            Pop3Server.PortNumber AS Pop3PortNumber
             FROM
