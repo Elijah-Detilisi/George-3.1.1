@@ -8,75 +8,6 @@ namespace George.Data.Layer.DataBase
 {
     public static class StoredProcedures
     {
-        public static string GetEmailSettings()
-        {
-            string query = @"
-            WITH Variable AS 
-            ( 
-            SELECT 
-	            (   SELECT 
-			            Id
-		            FROM 
-			            EmailDomain
-		            WHERE 
-			            LOWER(EmailDomain.DomainName) = 
-			            (SELECT SUBSTR(@emailAddress, INSTR(@emailAddress, '@')+1, LENGTH(@emailAddress)))
-	            ) 
-            AS DomainId 
-            )
-
-            --Select settings
-
-            SELECT  
-	            SmtpServer.HostName AS SmtpHostName, 
-	            SmtpServer.PortNumber AS SmtpPortNumber, 
-	            Pop3Server.HostName AS Pop3HostName, 
-	            Pop3Server.PortNumber AS Pop3PortNumber
-            FROM
-	            UserAccounts
-            INNER JOIN SmtpServer
-	            ON SmtpServer.FK_DomainId = (SELECT DomainId FROM Variable)
-            INNER JOIN Pop3Server
-	            ON Pop3Server.FK_DomainId = (SELECT DomainId FROM Variable)
-            WHERE
-	            UserAccounts.EmailAddress = @emailAddress;
-
-            ";
-
-            return query;
-        }
-
-        public static string SaveUserAccount()
-        {
-            string query = @"
-             --Initialize variables tabel
-            PRAGMA temp_store = 2;
-            CREATE TEMP TABLE IF NOT EXISTS _Variables(_serverId INT);
-
-            --Declare variables
-            INSERT INTO _Variables (_serverId) VALUES (0);
-
-            --Determine serverId 
-            UPDATE _Variables 
-            SET 
-	            _serverId = (
-		            SELECT Id
-		            FROM EmailDomain
-		            WHERE 
-			            LOWER(EmailDomain.DomainName) = (SELECT SUBSTR(@emailAddress, INSTR(@emailAddress, '@')+1, LENGTH(@emailAddress)))
-	            );
-            --Insert new account
-            INSERT INTO 
-	            UserAccounts (EmailAddress, EmailPassword, FK_DomainId)
-            VALUES
-	            (@emailAddress, @emailPassword, (SELECT _serverId FROM _Variables));
-            --Release _Variables
-            DROP TABLE IF EXISTS _Variables;
-            ";
-
-            return query;
-        }
-
         public static string GetUserAccount()
         {
             string query = @"
@@ -95,6 +26,52 @@ namespace George.Data.Layer.DataBase
 	            ON Pop3Server.FK_DomainId = UserAccounts.FK_DomainId
             WHERE
 	            UserAccounts.Id = @accountId;
+            ";
+
+            return query;
+        }
+
+        public static string GetEmailSettings()
+        {
+            string query = @"
+            WITH Variable AS 
+            ( 
+            SELECT 
+	            (   SELECT 
+			            Id
+		            FROM 
+			            EmailDomain
+		            WHERE 
+			            LOWER(EmailDomain.DomainName) = 
+			            (SELECT SUBSTR(@emailAddress, INSTR(@emailAddress, '@')+1, LENGTH(@emailAddress)))
+	            ) 
+            AS DomainId 
+            )
+
+            --Select settings
+            SELECT
+                SmtpServer.FK_DomainId AS DomainId,
+	            SmtpServer.HostName AS SmtpHostName, 
+	            SmtpServer.PortNumber AS SmtpPortNumber, 
+	            Pop3Server.HostName AS Pop3HostName, 
+	            Pop3Server.PortNumber AS Pop3PortNumber
+            FROM
+	            SmtpServer
+            INNER JOIN Pop3Server
+	            ON Pop3Server.FK_DomainId = (SELECT DomainId FROM Variable);
+            ";
+
+            return query;
+        }
+
+        public static string SaveUserAccount()
+        {
+            string query = @"
+            --Insert new account
+            INSERT INTO 
+	            UserAccounts (EmailAddress, EmailPassword, FK_DomainId)
+            VALUES
+	            (@emailAddress, @emailPassword, @domainId);
             ";
 
             return query;

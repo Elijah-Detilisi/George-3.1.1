@@ -41,11 +41,11 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
         #endregion
 
         #region Event Handlers
-        private void nextbutton_Click(object sender, EventArgs e)
+        private async void nextbutton_Click(object sender, EventArgs e)
         {
             ExtractCredentials();
-            
-            if (_accountController.LoginToInbox(_emailAddress, _password)) //login success
+            var isSuccess = await _accountController.LoginToInbox(_emailAddress, _password);
+            if (isSuccess)
             {
                 _accountController.CreateNewAccount(_emailAddress, _password);
                 Errorlabel.Hide();

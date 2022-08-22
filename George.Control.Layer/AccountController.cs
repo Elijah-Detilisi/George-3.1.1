@@ -27,10 +27,19 @@ namespace George.Control.Layer
         }
 
         #region Authentication Service Methods
-        public Boolean LoginToInbox(string emailAddress, string password)
+        public async Task<Boolean> LoginToInbox(string emailAddress, string password)
         {
-            UserAccount userAccount = new UserAccount();
             var isSuccess = true;
+            var emailSettings = await _dataAccess.GetEmailSettingsAsync(emailAddress);
+            var userAccount = new UserAccount() {
+                EmailAddress = emailAddress,
+                EmailPassword = password,
+                SmtpHostName = emailSettings.SmtpHostName,
+                SmtpPortNumber = emailSettings.SmtpPortNumber,
+                Pop3HostName = emailSettings.Pop3HostName,
+                Pop3PortNumber = emailSettings.Pop3PortNumber
+            };
+            
             try
             {
                 _emailInbox.LoginToEmail(userAccount);
@@ -43,10 +52,20 @@ namespace George.Control.Layer
             return isSuccess;
         }
 
-        public Boolean LoginToOutbox(string emailAddress, string password)
+        public async Task<Boolean> LoginToOutbox(string emailAddress, string password)
         {
-            UserAccount userAccount = new UserAccount();
             var isSuccess = true;
+            var emailSettings = await _dataAccess.GetEmailSettingsAsync(emailAddress);
+            var userAccount = new UserAccount()
+            {
+                EmailAddress = emailAddress,
+                EmailPassword = password,
+                SmtpHostName = emailSettings.SmtpHostName,
+                SmtpPortNumber = emailSettings.SmtpPortNumber,
+                Pop3HostName = emailSettings.Pop3HostName,
+                Pop3PortNumber = emailSettings.Pop3PortNumber
+            };
+
             try
             {
                 _emailOutbox.LoginToEmail(userAccount);

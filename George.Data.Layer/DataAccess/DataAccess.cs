@@ -43,29 +43,7 @@ namespace George.Data.Layer.DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine($"[INFO]: Error while executing GetEmailSettingsAsync; {ex.Message}");
-                //throw ex;
-                return null;
-            }
-        }
-
-        public async Task SaveUserAccountAsync(string emailAddress, string emailPassword)
-        {
-            try
-            {
-                using (IDbConnection db = _connectionManager.DefaultConnection())
-                {
-                    var parameters = new Dictionary<string, object>()
-                      {
-                        ["EmailAddress"] = emailAddress,
-                        ["EmailPassword"] = emailPassword
-                    };
-
-                    await db.ExecuteAsync(StoredProcedures.SaveUserAccount(), parameters);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[INFO]: Error while executing SaveUserAccountAsync; {ex.Message}");
+                throw ex;
             }
         }
 
@@ -74,7 +52,7 @@ namespace George.Data.Layer.DataAccess
             try
             {
                 using (IDbConnection db = _connectionManager.DefaultConnection())
-                { 
+                {
                     var parameters = new Dictionary<string, object>()
                     {
                         ["accountId"] = accountId
@@ -90,6 +68,32 @@ namespace George.Data.Layer.DataAccess
                 throw ex;
             }
         }
+
+        public async Task SaveUserAccountAsync(string emailAddress, string emailPassword)
+        {
+            try
+            {
+                using (IDbConnection db = _connectionManager.DefaultConnection())
+                {
+                    var emailSettings = await GetEmailSettingsAsync(emailAddress);
+
+                    var parameters = new Dictionary<string, object>()
+                      {
+                        ["EmailAddress"] = emailAddress,
+                        ["EmailPassword"] = emailPassword,
+                        ["DomainId"] = emailSettings.DomainId
+                    };
+
+                    await db.ExecuteAsync(StoredProcedures.SaveUserAccount(), parameters);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[INFO]: Error while executing SaveUserAccountAsync; {ex.Message}");
+            }
+        }
+
+        
         #endregion
 
         #region Initialization Methods
