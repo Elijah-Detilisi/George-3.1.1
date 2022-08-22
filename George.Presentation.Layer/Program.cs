@@ -1,6 +1,6 @@
-using George.GUI.CustomBuilds.SecurityForm;
+using George.Presentation.Layer.CustomBuilds.SecurityForm;
 
-namespace George.GUI
+namespace George.Presentation.Layer
 {
     internal static class Program
     {

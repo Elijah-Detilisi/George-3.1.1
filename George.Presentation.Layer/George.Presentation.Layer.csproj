@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\George.Control.Layer\George.Control.Layer.csproj" />
     <ProjectReference Include="..\George.Services.Layer\George.Services.Layer.csproj" />
   </ItemGroup>
 

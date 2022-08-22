@@ -1,4 +1,4 @@
-﻿namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
+﻿namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
 {
     partial class VideoDisplay
     {
@@ -101,7 +101,7 @@
             // videoPictureBox
             // 
             this.videoPictureBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(98)))), ((int)(((byte)(155)))));
-            this.videoPictureBox.BackgroundImage = global::George.GUI.Properties.Resources.face_recognition;
+            this.videoPictureBox.BackgroundImage = global::George.Presentation.Layer.Properties.Resources.face_recognition;
             this.videoPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.videoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.videoPictureBox.Location = new System.Drawing.Point(0, 0);

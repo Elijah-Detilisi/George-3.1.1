@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
+namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
 {
 
     using Emgu.CV;
     using Emgu.CV.Structure;
-    using George.GUI.CustomUtilities.Video;
     using System.ComponentModel;
+    using George.Presentation.Layer.CustomUtilities.Video;
 
     public partial class VideoDisplay : UserControl
     {

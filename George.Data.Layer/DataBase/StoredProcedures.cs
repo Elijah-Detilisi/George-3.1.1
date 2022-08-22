@@ -8,6 +8,44 @@ namespace George.Data.Layer.DataBase
 {
     public static class StoredProcedures
     {
+        public static string GetEmailSettings()
+        {
+            string query = @"
+            WITH Variable AS 
+            ( 
+            SELECT 
+	            (   SELECT 
+			            Id
+		            FROM 
+			            EmailDomain
+		            WHERE 
+			            LOWER(EmailDomain.DomainName) = 
+			            (SELECT SUBSTR(@emailAddress, INSTR(@emailAddress, '@')+1, LENGTH(@emailAddress)))
+	            ) 
+            AS DomainId 
+            )
+
+            --Select settings
+
+            SELECT  
+	            SmtpServer.HostName AS SmtpHostName, 
+	            SmtpServer.PortNumber AS SmtpPortNumber, 
+	            Pop3Server.HostName AS Pop3HostName, 
+	            Pop3Server.PortNumber AS Pop3PortNumber
+            FROM
+	            UserAccounts
+            INNER JOIN SmtpServer
+	            ON SmtpServer.FK_DomainId = (SELECT DomainId FROM Variable)
+            INNER JOIN Pop3Server
+	            ON Pop3Server.FK_DomainId = (SELECT DomainId FROM Variable)
+            WHERE
+	            UserAccounts.EmailAddress = @emailAddress;
+
+            ";
+
+            return query;
+        }
+
         public static string SaveUserAccount()
         {
             string query = @"

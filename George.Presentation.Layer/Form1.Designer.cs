@@ -1,4 +1,4 @@
-﻿namespace George.GUI
+﻿namespace George.Presentation.Layer
 {
     partial class Form1
     {

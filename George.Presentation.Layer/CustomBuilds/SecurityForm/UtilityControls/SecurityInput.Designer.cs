@@ -1,4 +1,4 @@
-﻿namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
+﻿namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
 {
     partial class SecurityInput
     {
@@ -99,7 +99,7 @@
             // 
             this.pwPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pwPictureBox.Image = global::George.GUI.Properties.Resources._lock;
+            this.pwPictureBox.Image = global::George.Presentation.Layer.Properties.Resources._lock;
             this.pwPictureBox.Location = new System.Drawing.Point(44, 99);
             this.pwPictureBox.Name = "pwPictureBox";
             this.pwPictureBox.Size = new System.Drawing.Size(43, 37);
@@ -151,7 +151,7 @@
             // 
             this.emailPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.emailPictureBox.Image = global::George.GUI.Properties.Resources.arroba;
+            this.emailPictureBox.Image = global::George.Presentation.Layer.Properties.Resources.arroba;
             this.emailPictureBox.Location = new System.Drawing.Point(44, 13);
             this.emailPictureBox.Name = "emailPictureBox";
             this.emailPictureBox.Size = new System.Drawing.Size(43, 37);

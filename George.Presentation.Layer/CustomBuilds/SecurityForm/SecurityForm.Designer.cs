@@ -1,4 +1,4 @@
-﻿namespace George.GUI.CustomBuilds.SecurityForm
+﻿namespace George.Presentation.Layer.CustomBuilds.SecurityForm
 {
     partial class SecurityForm
     {

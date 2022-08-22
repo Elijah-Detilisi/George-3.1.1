@@ -8,4 +8,4 @@ DataAccess dataAccess = new DataAccess();
 //Console.WriteLine("Done writing");
 
 var result = await dataAccess.GetUserAccountAsync(1);
-Console.WriteLine(result.SmtpPortNumber);
+Console.WriteLine(result.SmtpHostName);

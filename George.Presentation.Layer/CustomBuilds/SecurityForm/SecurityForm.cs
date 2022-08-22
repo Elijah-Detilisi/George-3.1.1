@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace George.GUI.CustomBuilds.SecurityForm
+namespace George.Presentation.Layer.CustomBuilds.SecurityForm
 {
-    using George.GUI.CustomBuilds.SecurityForm.UtilityControls;
+    using George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls;
     public partial class SecurityForm : Form
     {
         #region Instances
@@ -60,7 +60,7 @@ namespace George.GUI.CustomBuilds.SecurityForm
         {
             _isLogin = false;
             this.utilityButton.Text = "Login->";
-            this.pictureBox.Image = global::George.GUI.Properties.Resources.signUp;
+            this.pictureBox.Image = global::George.Presentation.Layer.Properties.Resources.signUp;
             this.bannerPanel.BackColor = Color.FromArgb(
                 ((int)(((byte)(19)))),
                 ((int)(((byte)(25)))),
@@ -71,7 +71,7 @@ namespace George.GUI.CustomBuilds.SecurityForm
         {
             _isLogin = true;
             this.utilityButton.Text = "SignUp->";
-            this.pictureBox.Image = global::George.GUI.Properties.Resources.ai;
+            this.pictureBox.Image = global::George.Presentation.Layer.Properties.Resources.ai;
             this.bannerPanel.BackColor = Color.FromArgb(
                 ((int)(((byte)(29)))),
                 ((int)(((byte)(98)))),

@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
-{    
-    using George.Services.Layer;
+namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
+{
+    using George.Control.Layer;
 
     public partial class SecurityInput : UserControl
     {
@@ -19,12 +19,12 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         private Action _nextAction;
         private string _password;
         private string _emailAddress;
-        private readonly AccountService _accountService;
+        private readonly AccountController _accountController;
         #endregion
 
         public SecurityInput()
         {
-            _accountService = new AccountService();
+            _accountController = new AccountController();
             InitializeComponent();
         }
 
@@ -45,9 +45,9 @@ namespace George.GUI.CustomBuilds.SecurityForm.UtilityControls
         {
             ExtractCredentials();
             
-            if (_accountService.LoginToInbox(_emailAddress, _password)) //login success
+            if (_accountController.LoginToInbox(_emailAddress, _password)) //login success
             {
-                _accountService.CreateNewAccount(_emailAddress, _password);
+                _accountController.CreateNewAccount(_emailAddress, _password);
                 Errorlabel.Hide();
                 _nextAction();
             }

@@ -25,6 +25,29 @@ namespace George.Data.Layer.DataAccess
         }
 
         #region Data Access Methods
+        public async Task<EmailSettings> GetEmailSettingsAsync(string emailAddress)
+        {
+            try
+            {
+                using (IDbConnection db = _connectionManager.DefaultConnection())
+                {
+                    var parameters = new Dictionary<string, object>()
+                    {
+                        ["EmailAddress"] = emailAddress
+                    };
+
+                    var output = await db.QueryAsync<EmailSettings>(StoredProcedures.GetEmailSettings(), parameters);
+                    return output.ToList()[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[INFO]: Error while executing GetEmailSettingsAsync; {ex.Message}");
+                //throw ex;
+                return null;
+            }
+        }
+
         public async Task SaveUserAccountAsync(string emailAddress, string emailPassword)
         {
             try
