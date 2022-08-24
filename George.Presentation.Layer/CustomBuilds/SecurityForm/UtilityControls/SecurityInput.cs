@@ -17,8 +17,6 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
     {
         #region Instances
         private Action _nextAction;
-        private string _password;
-        private string _emailAddress;
         private readonly AccountController _accountController;
         #endregion
 
@@ -33,21 +31,19 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
         {
             _nextAction = action;
         }
-        private void ExtractCredentials()
-        {
-            _emailAddress = emailTextBox.Text;
-            _password = pwTextBox.Text;
-        }
         #endregion
 
         #region Event Handlers
-        private async void nextbutton_Click(object sender, EventArgs e)
+        private void nextbutton_Click(object sender, EventArgs e)
         {
-            ExtractCredentials();
-            var isSuccess = await _accountController.LoginToInbox(_emailAddress, _password);
-            if (isSuccess)
+            var emailAddress = emailTextBox.Text;
+            var password = pwTextBox.Text;
+
+            this.nextbutton.Hide();
+            
+            if (_accountController.LoginToInbox(emailAddress, password))
             {
-                _accountController.CreateNewAccount(_emailAddress, _password);
+                _accountController.CreateNewAccount(emailAddress, password);
                 Errorlabel.Hide();
                 _nextAction();
             }
@@ -56,6 +52,8 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
                 Errorlabel.Show();
                 //repeat ask email prompt
             }
+
+            this.nextbutton.Show();
         }
         #endregion
     }

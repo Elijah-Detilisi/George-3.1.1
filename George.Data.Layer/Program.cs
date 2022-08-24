@@ -7,5 +7,5 @@ DataAccess dataAccess = new DataAccess();
 //await dataAccess.SaveUserAccountAsync("detilisi@gmail.com", "89ASD46ASD64SADSA46S4AD");
 Console.WriteLine("Done writing");
 
-var result = await dataAccess.GetEmailSettingsAsync("sonto@gmail.com");
+var result = dataAccess.GetEmailSettingsAsync("sonto@gmail.com");
 Console.WriteLine(result);

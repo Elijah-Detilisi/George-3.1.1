@@ -25,7 +25,7 @@ namespace George.Data.Layer.DataAccess
         }
 
         #region Data Access Methods
-        public async Task<EmailSettings> GetEmailSettingsAsync(string emailAddress)
+        public EmailSettings GetEmailSettingsAsync(string emailAddress)
         {
             try
             {
@@ -36,14 +36,14 @@ namespace George.Data.Layer.DataAccess
                         ["EmailAddress"] = emailAddress
                     };
 
-                    var output = await db.QueryAsync<EmailSettings>(StoredProcedures.GetEmailSettings(), parameters);
+                    var output = db.Query<EmailSettings>(StoredProcedures.GetEmailSettings(), parameters);
                     return output.ToList()[0];
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[INFO]: Error while executing GetEmailSettingsAsync; {ex.Message}");
-                throw ex;
+                return null;
             }
         }
 
@@ -65,7 +65,7 @@ namespace George.Data.Layer.DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine($"[INFO]: Error while executing GetUserAccountAsync; {ex.Message}");
-                throw ex;
+                return null;
             }
         }
 
@@ -75,7 +75,7 @@ namespace George.Data.Layer.DataAccess
             {
                 using (IDbConnection db = _connectionManager.DefaultConnection())
                 {
-                    var emailSettings = await GetEmailSettingsAsync(emailAddress);
+                    var emailSettings = GetEmailSettingsAsync(emailAddress);
 
                     var parameters = new Dictionary<string, object>()
                       {

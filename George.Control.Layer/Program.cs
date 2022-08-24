@@ -1,2 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using George.Control.Layer;
+
+AccountController accountController = new AccountController();
+var result = accountController.LoginToInbox("hello@hotmail.com", "hello");
+
+Console.WriteLine(result);

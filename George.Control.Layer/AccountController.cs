@@ -9,14 +9,15 @@ namespace George.Control.Layer
     using George.Data.Layer.DataModel;
     using George.Data.Layer.DataAccess;
     using George.Services.Layer.EmailService;
+    using George.Services.Layer.EncryptionService;
 
     public class AccountController
     {
         #region Instances
+        private readonly string _key;
         private readonly DataAccess _dataAccess;
         private readonly EmailInbox _emailInbox;
         private readonly EmailOutBox _emailOutbox;
-        
         #endregion
 
         public AccountController()
@@ -24,25 +25,17 @@ namespace George.Control.Layer
             _dataAccess = new DataAccess();
             _emailInbox = new EmailInbox();
             _emailOutbox = new EmailOutBox();
+            _key = TripleDES_Encryption.GetEncryptionKey("Detilisi");
         }
 
         #region Authentication Service Methods
-        public async Task<Boolean> LoginToInbox(string emailAddress, string password)
+        public Boolean LoginToInbox(string emailAddress, string password)
         {
             var isSuccess = true;
-            var emailSettings = await _dataAccess.GetEmailSettingsAsync(emailAddress);
-            var userAccount = new UserAccount() {
-                EmailAddress = emailAddress,
-                EmailPassword = password,
-                SmtpHostName = emailSettings.SmtpHostName,
-                SmtpPortNumber = emailSettings.SmtpPortNumber,
-                Pop3HostName = emailSettings.Pop3HostName,
-                Pop3PortNumber = emailSettings.Pop3PortNumber
-            };
-            
+            var credentials = GetCredentials(emailAddress, password);
             try
             {
-                _emailInbox.LoginToEmail(userAccount);
+                _emailInbox.LoginToEmail(credentials);
             }
             catch (Exception)
             {
@@ -52,10 +45,24 @@ namespace George.Control.Layer
             return isSuccess;
         }
 
-        public async Task<Boolean> LoginToOutbox(string emailAddress, string password)
+        public Boolean LoginToOutbox(string emailAddress, string password)
         {
             var isSuccess = true;
-            var emailSettings = await _dataAccess.GetEmailSettingsAsync(emailAddress);
+            var credentials = GetCredentials(emailAddress, password);
+            try
+            {
+                _emailOutbox.LoginToEmail(credentials);
+            }
+            catch (Exception)
+            {
+                isSuccess = false;
+            }
+
+            return isSuccess;
+        }
+        private UserAccount GetCredentials(string emailAddress, string password)
+        {
+            var emailSettings = _dataAccess.GetEmailSettingsAsync(emailAddress);
             var userAccount = new UserAccount()
             {
                 EmailAddress = emailAddress,
@@ -66,28 +73,23 @@ namespace George.Control.Layer
                 Pop3PortNumber = emailSettings.Pop3PortNumber
             };
 
-            try
-            {
-                _emailOutbox.LoginToEmail(userAccount);
-            }
-            catch (Exception)
-            {
-                isSuccess = false;
-            }
-
-            return isSuccess;
+            return userAccount;
         }
         #endregion
 
         #region Data Ops Service Methods
-        public void CreateNewAccount(string emailAddress, string password)
+        public async void CreateNewAccount(string emailAddress, string password)
         {
-            _ = _dataAccess.SaveUserAccountAsync(emailAddress, password);
+            password = TripleDES_Encryption.Encrypt(password, _key);
+            await _dataAccess.SaveUserAccountAsync(emailAddress, password);
         }
 
         public async Task<UserAccount> GetUserAccount(int accountId)
         {
-            return await _dataAccess.GetUserAccountAsync(accountId);
+            var userAccount = await _dataAccess.GetUserAccountAsync(accountId);
+            userAccount.EmailPassword = TripleDES_Encryption.Decrypt(userAccount.EmailPassword, _key);
+
+            return userAccount;
         }
         #endregion
     }

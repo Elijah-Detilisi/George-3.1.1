@@ -98,7 +98,7 @@
             this.Controls.Add(this.bannerPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SecurityForm";
-            this.Opacity = 0.85D;
+            this.Opacity = 0.95D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SignUpForm";
             this.TopMost = true;
