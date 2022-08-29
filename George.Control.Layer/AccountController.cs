@@ -25,7 +25,6 @@ namespace George.Control.Layer
             _dataAccess = new DataAccess();
             _emailInbox = new EmailInbox();
             _emailOutbox = new EmailOutBox();
-            //_key = TripleDES_Encryption.GetEncryptionKey("Detilisi");
         }
 
         #region Authentication Service Methods
@@ -80,14 +79,14 @@ namespace George.Control.Layer
         #region Data Ops Service Methods
         public async void CreateNewAccount(string emailAddress, string password)
         {
-            //password = TripleDES_Encryption.Encrypt(password, _key);
+            password = AES_Cipher.EncryptText(password);
             await _dataAccess.SaveUserAccountAsync(emailAddress, password);
         }
 
         public async Task<UserAccount> GetUserAccount(int accountId)
         {
             var userAccount = await _dataAccess.GetUserAccountAsync(accountId);
-            //userAccount.EmailPassword = TripleDES_Encryption.Decrypt(userAccount.EmailPassword, _key);
+            userAccount.EmailPassword = AES_Cipher.DecryptText(userAccount.EmailPassword);
 
             return userAccount;
         }

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "George.Data.Layer", "George
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "George.Presentation.Layer", "George.Presentation.Layer\George.Presentation.Layer.csproj", "{E8C8F79B-533D-4820-BCED-1E7EE32988DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "George.Control.Layer", "George.Control.Layer\George.Control.Layer.csproj", "{8F11FA25-62FA-4B57-9DDB-DE77CD303D9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "George.Control.Layer", "George.Control.Layer\George.Control.Layer.csproj", "{8F11FA25-62FA-4B57-9DDB-DE77CD303D9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
