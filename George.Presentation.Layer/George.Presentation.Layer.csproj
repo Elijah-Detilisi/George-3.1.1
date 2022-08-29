@@ -9,15 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Extensions\GeorgeUserDB.db" />
     <None Remove="Resources\Extensions\haarcascade_frontalface_alt.xml" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="bin\Debug\net6.0-windows\Resources\Extensions\haarcascade_frontalface_default.xml" />
-    <Content Include="Resources\Extensions\GeorgeUserDB.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>

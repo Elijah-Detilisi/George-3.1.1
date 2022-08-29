@@ -140,11 +140,13 @@ namespace George.Data.Layer.DataAccess
 
             if (!File.Exists(_connectionManager.GetDatabaseName()))
             {
+                Console.Beep();
                 Console.WriteLine("Initializing table");
                 SQLiteConnection.CreateFile(_databasePath);
                 CreateTables();
                 RestoreTableDefaultValues();
-                
+                Console.Beep();
+
             }
             
         }
