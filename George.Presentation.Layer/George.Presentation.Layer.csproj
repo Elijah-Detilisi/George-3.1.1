@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Extensions\GeorgeUserDB.db" />
+    <None Remove="Resources\Extensions\haarcascade_frontalface_alt.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +31,12 @@
   <ItemGroup>
     <ProjectReference Include="..\George.Control.Layer\George.Control.Layer.csproj" />
     <ProjectReference Include="..\George.Services.Layer\George.Services.Layer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Extensions\haarcascade_frontalface_alt.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
