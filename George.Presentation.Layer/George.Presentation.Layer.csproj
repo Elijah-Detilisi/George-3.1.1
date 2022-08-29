@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <None Remove="Resources\Extensions\GeorgeUserDB.db" />
-    <None Remove="Resources\Extensions\haarcascade_frontalface_alt.xml" />
   </ItemGroup>
 
   <ItemGroup>
