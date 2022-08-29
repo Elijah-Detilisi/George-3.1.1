@@ -135,8 +135,8 @@ namespace George.Data.Layer.DataAccess
         private void RestoreDataBase()
         {
 
-            var _databasePath = Directory.GetCurrentDirectory() + 
-                                @"\" + _connectionManager.GetDatabaseName();
+            var _databasePath = Directory.GetCurrentDirectory() +
+                                @"\Resources\Extensions\" + _connectionManager.GetDatabaseName();
 
             if (!File.Exists(_connectionManager.GetDatabaseName()))
             {
