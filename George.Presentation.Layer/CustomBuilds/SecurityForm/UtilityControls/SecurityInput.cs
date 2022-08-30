@@ -40,15 +40,24 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
             var password = pwTextBox.Text;
 
             this.nextbutton.Hide();
-            
+            Task.Run(() =>
+            {
+                this.progressBar.Invoke((MethodInvoker)(() =>
+                {
+                    this.progressBar.Show();
+                }));
+            });
+
             if (_accountController.LoginToInbox(emailAddress, password))
             {
                 _accountController.CreateNewAccount(emailAddress, password);
+                this.progressBar.Hide();
                 Errorlabel.Hide();
                 _nextAction();
             }
             else
             {
+                this.progressBar.Hide();
                 Errorlabel.Show();
                 //repeat ask email prompt
             }

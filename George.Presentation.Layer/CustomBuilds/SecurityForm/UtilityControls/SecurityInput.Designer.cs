@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.inputPanel = new System.Windows.Forms.Panel();
+            this.progressBar = new CircularProgressBar_NET5.CircularProgressBar();
             this.Errorlabel = new System.Windows.Forms.Label();
             this.nextbutton = new System.Windows.Forms.Button();
             this.pwPictureBox = new System.Windows.Forms.PictureBox();
@@ -48,6 +49,7 @@
             // 
             this.inputPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputPanel.Controls.Add(this.progressBar);
             this.inputPanel.Controls.Add(this.Errorlabel);
             this.inputPanel.Controls.Add(this.nextbutton);
             this.inputPanel.Controls.Add(this.pwPictureBox);
@@ -62,6 +64,43 @@
             this.inputPanel.Name = "inputPanel";
             this.inputPanel.Size = new System.Drawing.Size(334, 319);
             this.inputPanel.TabIndex = 0;
+            // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.AnimationFunction = WinFormAnimation_NET5.KnownAnimationFunctions.Linear;
+            this.progressBar.AnimationSpeed = 500;
+            this.progressBar.BackColor = System.Drawing.Color.Transparent;
+            this.progressBar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.progressBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(213)))), ((int)(((byte)(219)))));
+            this.progressBar.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(40)))), ((int)(((byte)(60)))));
+            this.progressBar.InnerMargin = 2;
+            this.progressBar.InnerWidth = -1;
+            this.progressBar.Location = new System.Drawing.Point(134, 243);
+            this.progressBar.MarqueeAnimationSpeed = 2000;
+            this.progressBar.Name = "progressBar";
+            this.progressBar.OuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(28)))), ((int)(((byte)(43)))));
+            this.progressBar.OuterMargin = -25;
+            this.progressBar.OuterWidth = 26;
+            this.progressBar.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(213)))), ((int)(((byte)(219)))));
+            this.progressBar.ProgressWidth = 10;
+            this.progressBar.SecondaryFont = new System.Drawing.Font("Segoe UI", 1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.progressBar.Size = new System.Drawing.Size(86, 73);
+            this.progressBar.StartAngle = 270;
+            this.progressBar.Step = 1;
+            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressBar.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.progressBar.SubscriptMargin = new System.Windows.Forms.Padding(0);
+            this.progressBar.SubscriptText = "";
+            this.progressBar.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.progressBar.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.progressBar.SuperscriptText = "";
+            this.progressBar.TabIndex = 2;
+            this.progressBar.Text = "loading...";
+            this.progressBar.TextMargin = new System.Windows.Forms.Padding(0);
+            this.progressBar.Value = 17;
+            this.progressBar.Visible = false;
             // 
             // Errorlabel
             // 
@@ -227,5 +266,6 @@
         private Label emailAddressLabel;
         private TextBox emailTextBox;
         private Label Errorlabel;
+        private CircularProgressBar_NET5.CircularProgressBar progressBar;
     }
 }
