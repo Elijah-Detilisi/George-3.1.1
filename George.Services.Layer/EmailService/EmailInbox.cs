@@ -65,5 +65,6 @@ namespace George.Services.Layer.EmailService
             return _allMessages;
         }
         #endregion
+
     }
 }

@@ -11,6 +11,7 @@ namespace George.Data.Layer.DataAccess
     using System.Data.SQLite;
     using George.Data.Layer.DataModel;
     using George.Data.Layer.DataBase;
+    using System.Diagnostics;
 
     public class DataAccess
     {
@@ -42,7 +43,7 @@ namespace George.Data.Layer.DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[INFO]: Error while executing GetEmailSettingsAsync; {ex.Message}");
+                Debug.WriteLine($"[INFO]: Error while executing GetEmailSettingsAsync; {ex.Message}");
                 return null;
             }
         }
@@ -64,7 +65,7 @@ namespace George.Data.Layer.DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[INFO]: Error while executing GetUserAccountAsync; {ex.Message}");
+                Debug.WriteLine($"[INFO]: Error while executing GetUserAccountAsync; {ex.Message}");
                 return null;
             }
         }
@@ -89,7 +90,7 @@ namespace George.Data.Layer.DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[INFO]: Error while executing SaveUserAccountAsync; {ex.Message}");
+                Debug.WriteLine($"[INFO]: Error while executing SaveUserAccountAsync; {ex.Message}");
             }
         }
 
@@ -111,7 +112,7 @@ namespace George.Data.Layer.DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[INFO]: Error while executing RestoreTableDefaultValues; {ex.Message}");
+                Debug.WriteLine($"[INFO]: Error while executing RestoreTableDefaultValues; {ex.Message}");
             }
         }
 
@@ -128,20 +129,19 @@ namespace George.Data.Layer.DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[INFO]: Error while executing RestoreTableDefaultValues; {ex.Message}");
+                Debug.WriteLine($"[INFO]: Error while executing RestoreTableDefaultValues; {ex.Message}");
             }
         }
 
         private void RestoreDataBase()
         {
 
-            var _databasePath = Directory.GetCurrentDirectory() +
-                                @"\Resources\Extensions\" + _connectionManager.GetDatabaseName();
+            var _databasePath = Directory.GetCurrentDirectory() + @"\Resources\Extensions\" + _connectionManager.GetDatabaseName();
 
             if (!File.Exists(_connectionManager.GetDatabaseName()))
             {
                 Console.Beep();
-                Console.WriteLine("Initializing table");
+                Debug.WriteLine("Initializing table @: " + _databasePath);
                 SQLiteConnection.CreateFile(_databasePath);
                 CreateTables();
                 RestoreTableDefaultValues();
@@ -166,7 +166,7 @@ namespace George.Data.Layer.DataAccess
 
             public ConnectionManager()
             {
-                _databaseName = "GeorgeDatabase.sqlite3";
+                _databaseName = "George.Database.sqlite3";
                 _connectionString = "data source= " + _databaseName;
                 
             }
