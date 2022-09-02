@@ -97,7 +97,7 @@
             this.progressBar.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
             this.progressBar.SuperscriptText = "";
             this.progressBar.TabIndex = 2;
-            this.progressBar.Text = "loading...";
+            this.progressBar.Text = "Verifying...";
             this.progressBar.TextMargin = new System.Windows.Forms.Padding(0);
             this.progressBar.Value = 17;
             this.progressBar.Visible = false;
