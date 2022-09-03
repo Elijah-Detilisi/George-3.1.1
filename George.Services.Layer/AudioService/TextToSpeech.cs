@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+#pragma warning disable CA1416 // Validate platform compatibility
 
 namespace George.Services.Layer.AudioService
 {
@@ -45,7 +42,9 @@ namespace George.Services.Layer.AudioService
         #region Cancellation Methods
         public void Dispose()
         {
+
             _speechSynthesizer.Pause();
+
             _speechSynthesizer.Dispose();
         }
         public void StopAsync()
@@ -55,3 +54,5 @@ namespace George.Services.Layer.AudioService
         #endregion
     }
 }
+
+#pragma warning restore CA1416 // Validate platform compatibility

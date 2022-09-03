@@ -1,30 +1,31 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
 {
     using George.Control.Layer;
+    using System.ComponentModel;
 
     public partial class SecurityInput : UserControl
     {
         #region Instances
         private Action _nextAction;
         private readonly AccountController _accountController;
+        private readonly AudioController _audioController;
         #endregion
 
         public SecurityInput()
         {
+            _audioController = new AudioController();
             _accountController = new AccountController();
+
             InitializeComponent();
         }
+
+        #region Event Handlers
+        private void nextbutton_Click(object sender, EventArgs e)
+        {
+            this.VerifyUserAuthentication();
+        }
+        #endregion
 
         #region Setter and Getter Methods
         public void SetNextAction(Action action)
@@ -33,47 +34,77 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
         }
         #endregion
 
-        #region Event Handlers
-        private void nextbutton_Click(object sender, EventArgs e)
+        #region Protocol methods
+        private void GetUserAuthentication()
+        {
+            Invoke((MethodInvoker)(() =>
+            {
+                this.Errorlabel.Hide();
+            }));
+
+            _audioController.Speak("Setting: Greeting");
+            _audioController.Speak("Setting: Sign-Up Intro");
+            _audioController.Speak("Setting: Email request");
+            //var emailTextBox.Text = _audioController.GetUserInput();
+            _audioController.Speak("Setting: Password request");
+            //var email = _audioController.GetUserInput();
+
+            this.VerifyUserAuthentication();
+        }
+
+        private void VerifyUserAuthentication()
         {
             var emailAddress = emailTextBox.Text;
             var password = pwTextBox.Text;
 
-            this.nextbutton.Hide();
-            this.progressBar.Show();
-
             Task.Run(() =>
             {
+                Invoke((MethodInvoker)(() =>
+                {
+                    this.nextbutton.Hide();
+                    this.progressBar.Show();
+                }));
+
+                _audioController.Speak("Setting: Authentication verification");
+
                 if (_accountController.LoginToInbox(emailAddress, password))
                 {
                     _accountController.CreateNewAccount(emailAddress, password);
-                    
-                    this.progressBar.Invoke((MethodInvoker)(() =>
+                    Invoke((MethodInvoker)(() =>
                     {
                         this.progressBar.Hide();
-                        Errorlabel.Hide();
+                        this.Errorlabel.Hide();
                     }));
 
                     _nextAction();
                 }
                 else
                 {
-                    this.progressBar.Invoke((MethodInvoker)(() =>
+                    Invoke((MethodInvoker)(() =>
                     {
                         this.progressBar.Hide();
-                        Errorlabel.Show();
+                        this.Errorlabel.Show();
+                        this.nextbutton.Show();
                     }));
                     
-                    //repeat ask email prompt
+                    //repeat authentication prompt
+                    _audioController.Speak("Setting: Invalid Authentication report");
+                    this.GetUserAuthentication();
                 }
-
-                this.nextbutton.Invoke((MethodInvoker)(() =>
-                {
-                    this.nextbutton.Show();
-                }));
-                
             });
         }
         #endregion
+
+        #region Background worker methods
+        private void signUpbgWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            this.GetUserAuthentication();
+        }
+        public void ExecuteProtocol()
+        {
+            signUpbgWorker1.RunWorkerAsync();
+        }
+        #endregion
+
     }
 }

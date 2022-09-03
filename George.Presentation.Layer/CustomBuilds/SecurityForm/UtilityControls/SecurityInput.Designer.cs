@@ -40,6 +40,7 @@
             this.dividerLabel1 = new System.Windows.Forms.Label();
             this.emailAddressLabel = new System.Windows.Forms.Label();
             this.emailTextBox = new System.Windows.Forms.TextBox();
+            this.signUpbgWorker1 = new System.ComponentModel.BackgroundWorker();
             this.inputPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pwPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emailPictureBox)).BeginInit();
@@ -237,6 +238,11 @@
             this.emailTextBox.TabIndex = 11;
             this.emailTextBox.Text = "user@gmail.com";
             // 
+            // signUpbgWorker1
+            // 
+            this.signUpbgWorker1.WorkerSupportsCancellation = true;
+            this.signUpbgWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.signUpbgWorker1_DoWork);
+            // 
             // SecurityInput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -267,5 +273,6 @@
         private TextBox emailTextBox;
         private Label Errorlabel;
         private CircularProgressBar_NET5.CircularProgressBar progressBar;
+        private System.ComponentModel.BackgroundWorker signUpbgWorker1;
     }
 }

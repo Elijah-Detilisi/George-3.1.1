@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace George.Control.Layer
 {
-    using George.Data.Layer.DataModel;
     using George.Data.Layer.DataAccess;
+    using George.Data.Layer.DataModel;
     using George.Services.Layer.EmailService;
     using George.Services.Layer.EncryptionService;
 
     public class AccountController
     {
         #region Instances
-        private readonly string _key;
         private readonly DataAccess _dataAccess;
         private readonly EmailInbox _emailInbox;
         private readonly EmailOutBox _emailOutbox;

@@ -1,0 +1,10 @@
+{
+  "Text-to-Speech": {
+    "Greeting": "Hello, my name is George, I am your voice operated emailing system.",
+    "Sign-Up Intro": "Welcome to the sign-up window.",
+    "Email request": "Please provide your email address.",
+    "Password request": "Please provide your email password.",
+    "Authentication verification": "Please wait while I verify your login info.",
+    "Invalid Authentication report": "The authentication details you provided are invalid, please try again."
+  }
+}

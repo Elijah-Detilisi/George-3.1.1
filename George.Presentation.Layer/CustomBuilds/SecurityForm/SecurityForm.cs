@@ -27,6 +27,11 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm
             _securityInput.SetNextAction(DisplaySignUpVideoDisplay);
 
             InitializeComponent();
+            Shown += SecurityForm_Shown;
+        }
+
+        private void SecurityForm_Shown(object? sender, EventArgs e)
+        {
             InitializeSecurityForm();
         }
 
@@ -40,6 +45,7 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm
         {
             DisplaySignUpBanner();
             DisplaySecurityInput();
+            _securityInput.ExecuteProtocol();
         }
         public void InitializeSecurityForm()
         {
@@ -146,7 +152,6 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm
             }
         }
         #endregion
-
 
     }
 }
