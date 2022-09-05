@@ -42,12 +42,25 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
                 this.Errorlabel.Hide();
             }));
 
-            _audioController.Speak("Setting: Greeting");
-            _audioController.Speak("Setting: Sign-Up Intro");
-            _audioController.Speak("Setting: Email request");
-            //var emailTextBox.Text = _audioController.GetUserInput();
-            _audioController.Speak("Setting: Password request");
-            //var email = _audioController.GetUserInput();
+            _audioController.Speak("Sign-up: Greeting");
+            _audioController.Speak("Sign-up: Introduction");
+            //Get email address
+            Invoke((MethodInvoker)(() =>
+            {
+                this.emailTextBox.Focus();
+                _audioController.Speak("Sign-up: Email_Request");
+                var text = _audioController.Listen();
+            }));
+            
+
+            //Get email password
+            Invoke((MethodInvoker)(() =>
+            {
+                this.pwTextBox.Focus();
+                _audioController.Speak("Sign-up: Password_Request");
+                var text1 = _audioController.Listen();
+            }));
+            
 
             this.VerifyUserAuthentication();
         }
@@ -65,7 +78,7 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
                     this.progressBar.Show();
                 }));
 
-                _audioController.Speak("Setting: Authentication verification");
+                _audioController.Speak("Sign-up: Authentication_Verification");
 
                 if (_accountController.LoginToInbox(emailAddress, password))
                 {
@@ -88,7 +101,7 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
                     }));
                     
                     //repeat authentication prompt
-                    _audioController.Speak("Setting: Invalid Authentication report");
+                    _audioController.Speak("Sign-up: Authentication_Error");
                     this.GetUserAuthentication();
                 }
             });

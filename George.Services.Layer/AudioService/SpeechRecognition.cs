@@ -13,28 +13,49 @@ namespace George.Services.Layer.AudioService
     public class SpeechRecognition
     {
         #region Instances
-        private readonly SpeechRecognitionEngine _speechRecognitionEngine;
+        private readonly SpeechRecognitionEngine _commandSpeechRecognizer;
+        private readonly SpeechRecognitionEngine _dictationSpeechRecognizer;
         #endregion
 
         public SpeechRecognition()
         {
-            var language = new System.Globalization.CultureInfo("en-us");
-            _speechRecognitionEngine = new SpeechRecognitionEngine(language);
+            var language = new System.Globalization.CultureInfo("en-uk");
+            _commandSpeechRecognizer = new SpeechRecognitionEngine(language);
+            _dictationSpeechRecognizer = new SpeechRecognitionEngine(language);
+
             LoadRecognizer();
         }
 
         #region Class Methods
         public string Listen()
         {
-            Console.WriteLine("Listening...");
             try
             {
-                RecognitionResult result = _speechRecognitionEngine.Recognize();
+                RecognitionResult result = _commandSpeechRecognizer.Recognize();
+                if (result != null)
+                {
+                    return result.Text;
+                }
+                else
+                {
+                    return "Didn't get that, please try again.";
+                }
+            }
+            catch (Exception)
+            {
+               return "Didn't get that, please try again.";
+            }
+        }
+
+        public string Dictate()
+        {
+            try
+            {
+                RecognitionResult result = _dictationSpeechRecognizer.Recognize();
                 return result.Text;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 return "Didn't get that, please try again.";
             }
         }
@@ -45,12 +66,10 @@ namespace George.Services.Layer.AudioService
         {
             var myChoices = new Choices();
 
-            //inbox actions
-            myChoices.Add("exit");
-            myChoices.Add("read");
-            myChoices.Add("write");
-            myChoices.Add("help");
-            myChoices.Add("something greater");
+            foreach(var command in Vocabulary.GetCommands("Sign-up: Exit"))
+            {
+                myChoices.Add(command);
+            }
 
             return myChoices;
         }
@@ -60,8 +79,8 @@ namespace George.Services.Layer.AudioService
             var grammarBuilder = new GrammarBuilder(GetChoices());
             var grammar = new Grammar(grammarBuilder);
 
-            _speechRecognitionEngine.LoadGrammar(grammar);
-            _speechRecognitionEngine.SetInputToDefaultAudioDevice();
+            _commandSpeechRecognizer.LoadGrammar(grammar);
+            _commandSpeechRecognizer.SetInputToDefaultAudioDevice();
         }
         #endregion
     }

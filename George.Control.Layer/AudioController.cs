@@ -6,22 +6,32 @@ namespace George.Control.Layer
     public  class AudioController
     {
         #region Instances
-        private object _systemVocabulary;
         private readonly TextToSpeech _textToSpeech;
         private readonly SpeechRecognition _speechRecognition;
         #endregion
 
         public AudioController()
         {
-            _systemVocabulary = new object();
             _textToSpeech = new TextToSpeech(); 
             _speechRecognition = new SpeechRecognition();
         }
 
         #region Text-to-Speech Methods
-        public void Speak(string setting)
+        public void Speak(string promptKey)
         {
-            _textToSpeech.Speak(setting);
+            string promptMessage = Vocabulary.GetPromptMessage(promptKey);
+            _textToSpeech.Speak(promptMessage);
+        }
+        #endregion
+
+        #region Speech-recognition Methods
+        public string Listen()
+        {
+            return _speechRecognition.Listen();
+        }
+        public string Dictate()
+        {
+            return _speechRecognition.Dictate();
         }
         #endregion
 
