@@ -49,7 +49,7 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
             {
                 this.emailTextBox.Focus();
                 _audioController.Speak("Sign-up: Email_Request");
-                var text = _audioController.Listen();
+                var text = _audioController.Dictate();
             }));
             
 
@@ -58,7 +58,7 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
             {
                 this.pwTextBox.Focus();
                 _audioController.Speak("Sign-up: Password_Request");
-                var text1 = _audioController.Listen();
+                var text1 = _audioController.Dictate();
             }));
             
 

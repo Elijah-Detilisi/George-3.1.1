@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#pragma warning disable CA1416 // Validate platform compatibility
+
 namespace George.Services.Layer.AudioService
 {
     using System.Speech.Recognition;
 
-#pragma warning disable CA1416 // Validate platform compatibility
+
 
     public class SpeechRecognition
     {
@@ -29,34 +31,27 @@ namespace George.Services.Layer.AudioService
         #region Class Methods
         public string Listen()
         {
-            try
+            RecognitionResult result = _commandSpeechRecognizer.Recognize();
+            if (result != null)
             {
-                RecognitionResult result = _commandSpeechRecognizer.Recognize();
-                if (result != null)
-                {
-                    return result.Text;
-                }
-                else
-                {
-                    return "Didn't get that, please try again.";
-                }
+                return result.Text;
             }
-            catch (Exception)
+            else
             {
-               return "Didn't get that, please try again.";
+                throw new Exception("Failed To Recognize");
             }
         }
 
         public string Dictate()
         {
-            try
+            RecognitionResult result = _dictationSpeechRecognizer.Recognize();
+            if (result != null)
             {
-                RecognitionResult result = _dictationSpeechRecognizer.Recognize();
                 return result.Text;
             }
-            catch (Exception)
+            else
             {
-                return "Didn't get that, please try again.";
+                throw new Exception("Failed To Dictate");
             }
         }
         #endregion
@@ -81,10 +76,10 @@ namespace George.Services.Layer.AudioService
 
             _commandSpeechRecognizer.LoadGrammar(grammar);
             _commandSpeechRecognizer.SetInputToDefaultAudioDevice();
+            _dictationSpeechRecognizer.SetInputToDefaultAudioDevice();
         }
         #endregion
     }
+}
 
 #pragma warning restore CA1416 // Validate platform compatibility
-
-}

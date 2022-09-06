@@ -31,7 +31,7 @@ namespace George.Control.Layer
         }
         public string Dictate()
         {
-            return _speechRecognition.Dictate();
+            return _speechRecognition.Listen();
         }
         #endregion
 
