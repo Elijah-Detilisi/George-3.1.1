@@ -26,7 +26,7 @@ namespace George.Services.Layer.AudioService
         {
             _commandTextResult = "";
             _commandTextResult = "";
-            _recognizerDialact = new CultureInfo("en-US");
+            _recognizerDialact = new CultureInfo("en-GB");
             _commandSpeechRecognizer = new SpeechRecognitionEngine(_recognizerDialact);
             _dictationSpeechRecognizer = new SpeechRecognitionEngine(_recognizerDialact);
 
