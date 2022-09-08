@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace George.Services.Layer.AudioService
 {
+    using System.Globalization;
     using System.Speech.Recognition;
-    using System.Globalization.CultureInfo;
 
     public class SpeechRecognition
     {
