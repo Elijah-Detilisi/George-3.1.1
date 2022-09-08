@@ -25,7 +25,7 @@ namespace George.Services.Layer.AudioService
         public SpeechRecognition()
         {
             _commandTextResult = "";
-            _commandTextResult = "";
+            _dicatationTextResult = "";
             _recognizerDialact = new CultureInfo("en-GB");
             _commandSpeechRecognizer = new SpeechRecognitionEngine(_recognizerDialact);
             _dictationSpeechRecognizer = new SpeechRecognitionEngine(_recognizerDialact);
@@ -83,12 +83,16 @@ namespace George.Services.Layer.AudioService
 
             _commandSpeechRecognizer.LoadGrammar(commandGrammar);
             _dictationSpeechRecognizer.LoadGrammar(dicatationGrammar);
+
             _commandSpeechRecognizer.SetInputToDefaultAudioDevice();
             _dictationSpeechRecognizer.SetInputToDefaultAudioDevice();
             
             //Speech event Handlers
             _commandSpeechRecognizer.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(_commandRecognizer_SpeechRecognized);
+            _dictationSpeechRecognizer.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(_dictationSpeechRecognizer_SpeechRecognized);
+
             _commandSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple); 
+            _dictationSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
 
         } 
         #endregion
@@ -98,14 +102,26 @@ namespace George.Services.Layer.AudioService
         {
             _commandTextResult = e.Result.Text;
             Console.WriteLine("Recognized text: " + _commandTextResult);  
-        } 
+        }
+        private void _dictationSpeechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        {
+            _commandTextResult = e.Result.Text;
+            Console.WriteLine("Recognized text: " + _commandTextResult);
+        }
         #endregion
-        
+
         #region Getter methods
         public string GetCommandTextResult(){
             var result = _commandTextResult;
             _commandTextResult = "";
             
+            return result;
+        }
+        public string GetDicattionTextResult()
+        {
+            var result = _dicatationTextResult;
+            _dicatationTextResult = "";
+
             return result;
         }
         #endregion
