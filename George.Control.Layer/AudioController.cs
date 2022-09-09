@@ -25,15 +25,19 @@ namespace George.Control.Layer
         #endregion
 
         #region Speech-recognition Methods
+        public void StartRecognizer()
+        {
+            _speechRecognition.StartListening();
+            _speechRecognition.StartDictating();
+        }
         public string Listen()
         {
-            //return _speechRecognition.Listen();
-            return "";
+            return _speechRecognition.GetCommandTextResult();
+            
         }
         public string Dictate()
         {
-            //return _speechRecognition.Listen();
-            return "";
+            return _speechRecognition.GetDicattionTextResult();
         }
         #endregion
 

@@ -111,6 +111,7 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
         #region Background worker methods
         private void signUpbgWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            _audioController.StartRecognizer();
             this.GetUserAuthentication();
         }
         public void ExecuteProtocol()

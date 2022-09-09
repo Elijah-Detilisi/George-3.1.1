@@ -1,6 +1,10 @@
 ﻿using George.Control.Layer;
 
-AccountController accountController = new AccountController();
-var result = accountController.LoginToInbox("hello@hotmail.com", "hello");
 
-Console.WriteLine(result);
+AudioController audioController = new AudioController();
+audioController.StartRecognizer();
+
+while (true)
+{
+    Console.WriteLine("keep running: "+ audioController.Listen());
+}

@@ -42,7 +42,7 @@ namespace George.Services.Layer.AudioService
 
         public void StartDictating()
         {
-            _commandSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
+            _dictationSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
         }
         #endregion
 
@@ -95,12 +95,12 @@ namespace George.Services.Layer.AudioService
         private void _commandRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)  
         {
             _commandTextResult = e.Result.Text;
-            Debug.WriteLine("Recognized text: " + _commandTextResult);  
+            Debug.WriteLine("Recognized command: " + _commandTextResult);  
         }
         private void _dictationSpeechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
             _dicatationTextResult = e.Result.Text;
-            Debug.WriteLine("Recognized text: " + _dicatationTextResult);
+            Debug.WriteLine("Recognized dictation: " + _dicatationTextResult);
         }
         #endregion
 

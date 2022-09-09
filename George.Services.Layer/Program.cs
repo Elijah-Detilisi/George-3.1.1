@@ -8,7 +8,7 @@ speechRecognition.StartDictating();
 
 while (true)
 {
-    Console.WriteLine("Keep program running: " + speechRecognition.GetCommandTextResult());
+    Console.WriteLine("Keep program running: " + speechRecognition.GetDicattionTextResult());
 }
 
 
