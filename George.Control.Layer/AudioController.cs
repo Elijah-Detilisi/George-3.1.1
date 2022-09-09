@@ -27,11 +27,13 @@ namespace George.Control.Layer
         #region Speech-recognition Methods
         public string Listen()
         {
-            return _speechRecognition.Listen();
+            //return _speechRecognition.Listen();
+            return "";
         }
         public string Dictate()
         {
-            return _speechRecognition.Listen();
+            //return _speechRecognition.Listen();
+            return "";
         }
         #endregion
 

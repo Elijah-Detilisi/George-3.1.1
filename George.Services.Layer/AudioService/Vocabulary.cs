@@ -36,19 +36,19 @@ namespace George.Services.Layer.AudioService
             }
         };
 
-        private readonly static Dictionary<string, List<string>> _registeredCommands = new Dictionary<string, List<string>>()
+        private readonly static Dictionary<string, string[]> _registeredCommands = new Dictionary<string, string[]>()
         {
             {
                 "Sign-up: Exit", 
-                    new List<string>(){
+                    new string[]{
                         "close", "sleep", 
-                        "stop", "shut up",  
+                        "stop", "shut up", "thunderstruck", 
                         "good bye", "shut down", "turn off"
                     } 
             },
             {
                 "Sign-up: Login",
-                    new List<string>(){
+                    new string[]{
                         "login", "sign in"
                     }
             },
@@ -64,7 +64,7 @@ namespace George.Services.Layer.AudioService
             return message;
         }
 
-        public static List<string> GetCommands(string commandKey)
+        public static string[] GetCommands(string commandKey)
         {
             var commands = _registeredCommands[commandKey];
             return commands;

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace George.Services.Layer.AudioService
 {
+    using System.Diagnostics;
     using System.Globalization;
     using System.Speech.Recognition;
 
@@ -30,91 +31,27 @@ namespace George.Services.Layer.AudioService
             _commandSpeechRecognizer = new SpeechRecognitionEngine(_recognizerDialact);
             _dictationSpeechRecognizer = new SpeechRecognitionEngine(_recognizerDialact);
 
-            LoadRecognizer();
+            initializeRecognizer();
         }
 
-        #region Class Methods
-        public string Listen()
+        #region Launch Methods
+        public void StartListening()
         {
-            RecognitionResult result = _commandSpeechRecognizer.Recognize();
-            if (result != null)
-            {
-                return result.Text;
-            }
-            else
-            {
-                throw new Exception("Failed To Recognize");
-            }
+            _commandSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
         }
 
-        public string Dictate()
+        public void StartDictating()
         {
-            RecognitionResult result = _dictationSpeechRecognizer.Recognize();
-            if (result != null)
-            {
-                return result.Text;
-            }
-            else
-            {
-                throw new Exception("Failed To Dictate");
-            }
-        }
-        #endregion
-
-        #region Initialization Methods
-        private Choices GetChoices()
-        {
-            var myChoices = new Choices();
-
-            foreach(var command in Vocabulary.GetCommands("Sign-up: Exit"))
-            {
-                myChoices.Add(command);
-            }
-
-            return myChoices;
-        }
-
-        private void LoadRecognizer()
-        {
-            //Prepare recognizer grammar
-            var grammarBuilder = new GrammarBuilder(GetChoices());
-            var commandGrammar = new Grammar(grammarBuilder);
-            var dicatationGrammar = new DictationGrammar();
-
-            _commandSpeechRecognizer.LoadGrammar(commandGrammar);
-            _dictationSpeechRecognizer.LoadGrammar(dicatationGrammar);
-
-            _commandSpeechRecognizer.SetInputToDefaultAudioDevice();
-            _dictationSpeechRecognizer.SetInputToDefaultAudioDevice();
-            
-            //Speech event Handlers
-            _commandSpeechRecognizer.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(_commandRecognizer_SpeechRecognized);
-            _dictationSpeechRecognizer.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(_dictationSpeechRecognizer_SpeechRecognized);
-
-            _commandSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple); 
-            _dictationSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
-
-        } 
-        #endregion
-        
-        #region Event Handlers
-        private void _commandRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)  
-        {
-            _commandTextResult = e.Result.Text;
-            Console.WriteLine("Recognized text: " + _commandTextResult);  
-        }
-        private void _dictationSpeechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
-        {
-            _commandTextResult = e.Result.Text;
-            Console.WriteLine("Recognized text: " + _commandTextResult);
+            _commandSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
         }
         #endregion
 
         #region Getter methods
-        public string GetCommandTextResult(){
+        public string GetCommandTextResult()
+        {
             var result = _commandTextResult;
             _commandTextResult = "";
-            
+
             return result;
         }
         public string GetDicattionTextResult()
@@ -125,6 +62,48 @@ namespace George.Services.Layer.AudioService
             return result;
         }
         #endregion
+
+        #region Initialization Methods
+        private void LoadSystemVocabulary()
+        {
+            //Get commands
+            var commandChoices = new Choices(Vocabulary.GetCommands("Sign-up: Exit"));
+            
+            //Prepare recognizer grammar
+            var commandGrammar = new Grammar(new GrammarBuilder(commandChoices));
+            var dicatationGrammar = new DictationGrammar();
+
+            //Load Grammar
+            _commandSpeechRecognizer.LoadGrammar(commandGrammar);
+            _dictationSpeechRecognizer.LoadGrammar(dicatationGrammar);
+
+        }
+
+        private void initializeRecognizer()
+        {
+            LoadSystemVocabulary();
+            _commandSpeechRecognizer.SetInputToDefaultAudioDevice();
+            _dictationSpeechRecognizer.SetInputToDefaultAudioDevice();
+            
+            //Speech event Handlers
+            _commandSpeechRecognizer.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(_commandRecognizer_SpeechRecognized);
+            _dictationSpeechRecognizer.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(_dictationSpeechRecognizer_SpeechRecognized);
+        } 
+        #endregion
+        
+        #region Event Handlers Methods
+        private void _commandRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)  
+        {
+            _commandTextResult = e.Result.Text;
+            Debug.WriteLine("Recognized text: " + _commandTextResult);  
+        }
+        private void _dictationSpeechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        {
+            _dicatationTextResult = e.Result.Text;
+            Debug.WriteLine("Recognized text: " + _dicatationTextResult);
+        }
+        #endregion
+
     }
 }
 
