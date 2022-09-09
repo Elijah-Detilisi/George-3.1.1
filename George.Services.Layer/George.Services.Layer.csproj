@@ -8,14 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="AudioService\SpeechRecognitionTutorial.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="AudioService\SpeechRecognitionTutorial.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\George.Data.Layer\George.Data.Layer.csproj" />
   </ItemGroup>
 
