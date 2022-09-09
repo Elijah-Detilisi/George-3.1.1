@@ -44,6 +44,21 @@ namespace George.Services.Layer.AudioService
         {
             _dictationSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
         }
+
+        public string Dicate()
+        {
+            var result = _dictationSpeechRecognizer.Recognize().Text;
+            if (result != null)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+
+            
+        }
         #endregion
 
         #region Getter methods

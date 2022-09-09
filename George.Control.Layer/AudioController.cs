@@ -28,7 +28,7 @@ namespace George.Control.Layer
         public void StartRecognizer()
         {
             _speechRecognition.StartListening();
-            _speechRecognition.StartDictating();
+            //_speechRecognition.StartDictating();
         }
         public string Listen()
         {
@@ -37,7 +37,7 @@ namespace George.Control.Layer
         }
         public string Dictate()
         {
-            return _speechRecognition.GetDicattionTextResult();
+            return _speechRecognition.Dicate();
         }
         #endregion
 

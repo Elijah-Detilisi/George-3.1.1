@@ -50,6 +50,7 @@ namespace George.Presentation.Layer.CustomBuilds.SecurityForm.UtilityControls
                 this.emailTextBox.Focus();
                 _audioController.Speak("Sign-up: Email_Request");
                 var text = _audioController.Dictate();
+                this.emailTextBox.Text = text;
             }));
             
 
