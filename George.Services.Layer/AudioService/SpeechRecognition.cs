@@ -64,14 +64,8 @@ namespace George.Services.Layer.AudioService
         public string GetActiveDictation()
         {
             var result = _dictationSpeechRecognizer.Recognize().Text;
-            if (result != null)
-            {
-                return result;
-            }
-            else
-            {
-                return "";
-            }
+
+            return (result != null) ? result : "";
         }
         #endregion
 
