@@ -34,7 +34,7 @@ namespace George.Services.Layer.AudioService
             initializeRecognizer();
         }
 
-        #region Launch Methods
+        #region Recognizer Launching
         public void StartListening()
         {
             _commandSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
@@ -44,8 +44,24 @@ namespace George.Services.Layer.AudioService
         {
             _dictationSpeechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
         }
+        #endregion
 
-        public string Dicate()
+        #region Recognizer Results
+        public string GetCommand()
+        {
+            var result = _commandTextResult;
+            _commandTextResult = "";
+
+            return result;
+        }
+        public string GetAsyncDictation()
+        {
+            var result = _dicatationTextResult;
+            _dicatationTextResult = "";
+
+            return result;
+        }
+        public string GetActiveDictation()
         {
             var result = _dictationSpeechRecognizer.Recognize().Text;
             if (result != null)
@@ -56,37 +72,25 @@ namespace George.Services.Layer.AudioService
             {
                 return "";
             }
-
-            
         }
         #endregion
 
-        #region Getter methods
-        public string GetCommandTextResult()
-        {
-            var result = _commandTextResult;
-            _commandTextResult = "";
-
-            return result;
-        }
-        public string GetDicattionTextResult()
-        {
-            var result = _dicatationTextResult;
-            _dicatationTextResult = "";
-
-            return result;
-        }
-        #endregion
-
-        #region Initialization Methods
+        #region Recognizer Initialization
         private void LoadSystemVocabulary()
         {
             //Get commands
-            var commandChoices = new Choices(Vocabulary.GetCommands("Sign-up: Exit"));
-            
+            var commandVocabulary = Vocabulary.GetCommands("Sign-up: Exit").Concat(
+                                    Vocabulary.GetCommands("Sign-up: Exit"));
+
+            var dictationVocabulary = Vocabulary.GetDictationInputs("Spelling: AlphaNumerics").Concat(
+                                      Vocabulary.GetDictationInputs("Email: Domains"));
+
+            var commandChoices = new Choices(commandVocabulary.ToArray<string>());
+            var dictationChoices = new Choices(dictationVocabulary.ToArray<string>());
+
             //Prepare recognizer grammar
             var commandGrammar = new Grammar(new GrammarBuilder(commandChoices));
-            var dicatationGrammar = new DictationGrammar();
+            var dicatationGrammar = new Grammar(new GrammarBuilder(dictationChoices));
 
             //Load Grammar
             _commandSpeechRecognizer.LoadGrammar(commandGrammar);
@@ -106,7 +110,7 @@ namespace George.Services.Layer.AudioService
         } 
         #endregion
         
-        #region Event Handlers Methods
+        #region Recognizer Event Handlers
         private void _commandRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)  
         {
             _commandTextResult = e.Result.Text;

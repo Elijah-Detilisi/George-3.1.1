@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using System.Linq;
 
 namespace George.Services.Layer.AudioService
 {
@@ -54,6 +50,22 @@ namespace George.Services.Layer.AudioService
             },
 
         };
+
+        private readonly static Dictionary<string, string[]> _dictationInputs = new Dictionary<string, string[]>()
+        {
+            {
+                "Spelling: AlphaNumerics",
+                    "a-b-c-d-e-f-g-h-i-j-k-l-m-n-o-p-q-r-s-t-u-v-w-x-y-z-1-2-3-4-5-6-7-8-9-0".Split("-")
+            },
+            {
+                "Email: Domains",
+                    new string[]{
+                        "@gmail.com", "@yahoo.com", "@hotmail.com",
+                        "@outlook.com", "@office365.com"
+                    }
+            },
+
+        };
         #endregion
 
         #region Class methods
@@ -69,7 +81,12 @@ namespace George.Services.Layer.AudioService
             var commands = _registeredCommands[commandKey];
             return commands;
         }
-        #endregion
 
+        public static string[] GetDictationInputs(string dictationKey)
+        {
+            var commands = _dictationInputs[dictationKey];
+            return commands;
+        }
+        #endregion
     }
 }

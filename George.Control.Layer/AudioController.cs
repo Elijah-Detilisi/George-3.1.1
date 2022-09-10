@@ -28,16 +28,15 @@ namespace George.Control.Layer
         public void StartRecognizer()
         {
             _speechRecognition.StartListening();
-            //_speechRecognition.StartDictating();
         }
         public string Listen()
         {
-            return _speechRecognition.GetCommandTextResult();
+            return _speechRecognition.GetCommand();
             
         }
         public string Dictate()
         {
-            return _speechRecognition.Dicate();
+            return _speechRecognition.GetActiveDictation();
         }
         #endregion
 
